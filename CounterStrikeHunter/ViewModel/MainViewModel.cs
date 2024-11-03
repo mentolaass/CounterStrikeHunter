@@ -17,6 +17,7 @@ using System;
 using CounterStrikeHunter.Model.Dimension;
 using CommonServiceLocator;
 using System.Threading.Tasks;
+using System.Reflection;
 
 namespace CounterStrikeHunter.ViewModel
 {
@@ -104,6 +105,11 @@ namespace CounterStrikeHunter.ViewModel
         private void _notificationService_UpdateEvent(object sender, System.EventArgs e)
         {
             RaisePropertyChanged(nameof(AppNotifications));
+        }
+
+        public string AssemblyVersion
+        {
+            get => Assembly.GetExecutingAssembly().GetName().Version.ToString();
         }
 
         public ObservableCollection<Notification> AppNotifications

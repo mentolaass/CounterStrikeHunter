@@ -563,7 +563,7 @@
                                 Margin="75,0,0,0"
                                 HorizontalContentAlignment="Left"
                                 VerticalContentAlignment="Center"
-                                Content="1.0.0.0"
+                                Content="{Binding AssemblyVersion}"
                                 FontSize="16"
                                 Foreground="DarkGray"
                                 Visibility="{Binding MenuBarIsExpanded, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToVisibilityConverter}}" />
