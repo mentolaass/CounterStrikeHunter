@@ -1,0 +1,60 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:l="clr-namespace:System;assembly=mscorlib">
+    <l:String x:Key="QueueText">Очередь</l:String>
+    <l:String x:Key="TasksText">Задач</l:String>
+    <l:String x:Key="CancelButtonText">Отмена</l:String>
+    <l:String x:Key="RunButtonText">Запуск</l:String>
+
+    <l:String x:Key="UI_Header_Text">Очередь</l:String>
+    <l:String x:Key="UI_Header_Subtext">Задач</l:String>
+    <l:String x:Key="Cancel_Button_Text">Отмена</l:String>
+    <l:String x:Key="Run_Button_Text">Запуск</l:String>
+    <l:String x:Key="Quick_Inspection_Tab">Быстрая Проверка</l:String>
+    <l:String x:Key="Analyze_Files_Tab">Анализ Файлов</l:String>
+    <l:String x:Key="Analyze_Registry_Tab">Анализ Реестра</l:String>
+    <l:String x:Key="Analyze_Browsers_Tab">Анализ Браузеров</l:String>
+    <l:String x:Key="Analyze_Steam_Tab">Анализ Steam</l:String>
+    <l:String x:Key="Settings_Button_Text">Настройки</l:String>
+
+    <l:String x:Key="AsyncBackgroundAppTask_Title">Фоновая Асинхронная Задача Приложения</l:String>
+    <l:String x:Key="AsyncBackgroundAppTask_Description">Выполняет функции обновления/проверки и другие необходимые для работы задачи. Остановка этой задачи может привести к сбоям в логике работы.</l:String>
+    <l:String x:Key="SteamAccountParseTask_Title">Задача Парсинга Аккаунтов Steam</l:String>
+    <l:String x:Key="SteamAccountParseTask_Description">Получает данные о входах в аккаунты Steam, работает в фоновом режиме. Отправляет запрос на steamcommunity.com и анализирует значения.</l:String>
+    <l:String x:Key="BrowserReadDataTask_Title">Задача Чтения Данных Браузера</l:String>
+    <l:String x:Key="BrowserReadDataTask_Description">Получает данные использования браузеров, поддерживаются Chrome/Edge/Yandex/Opera/Brave. Отмена остановит получение данных.</l:String>
+    <l:String x:Key="RegistryReadDataTask_Title">Задача Чтения Данных Реестра</l:String>
+    <l:String x:Key="RegistryReadDataTask_Description">Чтение данных из реестра, в основном используется для данных о приложениях, кэше и других.</l:String>
+    <l:String x:Key="LocalFilesReadDataTask_Title">Задача Получения Локальных Файлов</l:String>
+    <l:String x:Key="LocalFilesDataTask_Description">Получение всех файлов в системе с использованием журнала USN.</l:String>
+
+
+    <l:String x:Key="AppCompatCache_Description">Получение информации об использовании приложений в системе, если результаты отсутствуют, значит это ранее было очищено.</l:String>
+    <l:String x:Key="ShellBag_Description">Использование файлов/папок в системе, если результат пуст, значит они были ранее удалены.</l:String>
+    <l:String x:Key="Bam_Description">Остатки работы службы Bam в системе, в основном файлы. Может также содержать недавно запущенные файлы.</l:String>
+    <l:String x:Key="Radar_Description">Последние файлы, проверенные на вредоносное содержимое, также может содержать недавно запущенные файлы.</l:String>
+    <l:String x:Key="WinRar_Description">Последние использованные архивы WinRar, создание/модификация/загрузка и т.д.</l:String>
+    <l:String x:Key="7Zip_Description">Последние использованные архивы 7Zip, создание/модификация/загрузка и т.д.</l:String>
+    <l:String x:Key="UserAssist_Description">UserAssist — это метод, используемый для заполнения меню «Пуск» часто используемыми приложениями.</l:String>
+
+    <l:String x:Key="Browser_Data_History">ИСТОРИЯ</l:String>
+    <l:String x:Key="Browser_Data_Downloads">ЗАГРУЗКИ</l:String>
+    <l:String x:Key="Browser_Sort_By_Date_Near">ПО ДАТЕ (Сначала новые)</l:String>
+    <l:String x:Key="Browser_Sort_By_Date_Far">ПО ДАТЕ (Сначала старые)</l:String>
+
+    <l:String x:Key="Steam_Account_Current">ТЕКУЩИЙ</l:String>
+    <l:String x:Key="Steam_Account_Login">вход в {0}</l:String>
+    <l:String x:Key="Steam_Data_Updating">Обновление Данных Steam</l:String>
+    <l:String x:Key="Steam_Data_Updating_Error">Ошибка Обновления Данных Steam</l:String>
+    <l:String x:Key="Steam_Data_Updating_Success">Успешное Обновление Данных Steam</l:String>
+
+    <l:String x:Key="Local_Files_Updating">Обновление Локального Списка Файлов</l:String>
+    <l:String x:Key="Local_Files_Updating_Error">Ошибка Обновления Локального Списка Файлов</l:String>
+    <l:String x:Key="Local_Files_Updating_Success">Обновление Локального Списка Файлов Успешно</l:String>
+    <l:String x:Key="Local_Files_Searching">Поиск По Фильтру...</l:String>
+
+    <l:String x:Key="File_Sort_Deleted">УДАЛЕННЫЕ</l:String>
+    <l:String x:Key="File_Sort_All">ВСЕ</l:String>
+    <l:String x:Key="File_Sort_Exists">СУЩЕСТВУЮЩИЕ</l:String>
+</ResourceDictionary>

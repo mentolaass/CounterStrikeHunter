@@ -1,0 +1,783 @@
+﻿<Window
+    x:Class="CounterStrikeHunter.View.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:control="clr-namespace:CounterStrikeHunter.View.UI_Control"
+    xmlns:converter="clr-namespace:CounterStrikeHunter.Model.Converter"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:local="clr-namespace:CounterStrikeHunter.View"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:md="https://github.com/fantasticfiasco/mvvm-dialogs"
+    xmlns:navigation="clr-namespace:CounterStrikeHunter.ViewModel.Navigation"
+    xmlns:vm="clr-namespace:CounterStrikeHunter.ViewModel"
+    Title="MainWindow"
+    Width="1000"
+    Height="650"
+    MinWidth="900"
+    MinHeight="650"
+    md:DialogServiceViews.IsRegistered="True"
+    AllowsTransparency="True"
+    Background="Transparent"
+    DataContext="{Binding Main, Source={StaticResource Locator}}"
+    FontFamily="/CounterStrikeHunter;component/Resources/Font/#MontSerrat"
+    ResizeMode="NoResize"
+    WindowStartupLocation="CenterScreen"
+    WindowStyle="None"
+    mc:Ignorable="d">
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding Loaded}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
+    <Window.Resources>
+        <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    </Window.Resources>
+
+    <Grid>
+        <Grid.Style>
+            <Style TargetType="Grid">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsDialogOpened, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                        <DataTrigger.EnterActions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation
+                                        FillBehavior="HoldEnd"
+                                        Storyboard.TargetProperty="(Grid.Effect).(BlurEffect.Radius)"
+                                        From="0"
+                                        To="10"
+                                        Duration="00:00:00.2" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </DataTrigger.EnterActions>
+                        <DataTrigger.ExitActions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation
+                                        FillBehavior="HoldEnd"
+                                        Storyboard.TargetProperty="(Grid.Effect).(BlurEffect.Radius)"
+                                        From="10"
+                                        To="0"
+                                        Duration="00:00:00.2" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </DataTrigger.ExitActions>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Grid.Style>
+
+        <Grid.Effect>
+            <BlurEffect Radius="0" />
+        </Grid.Effect>
+
+        <Grid.RowDefinitions>
+
+            <RowDefinition Height="50" />
+
+            <RowDefinition Height="*" />
+
+        </Grid.RowDefinitions>
+
+        <Border
+            x:Name="UI_Header"
+            Grid.Row="0"
+            Background="{StaticResource UI_Header_Background}"
+            BorderBrush="{StaticResource UI_Body_Border_Brush}"
+            BorderThickness="3,3,3,0"
+            CornerRadius="9, 9, 0, 0">
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseLeftButtonDown">
+                    <i:InvokeCommandAction Command="{Binding MaximizeWithHeader}" PassEventArgsToCommand="True" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="400" />
+                    <ColumnDefinition Width="232*" />
+                    <ColumnDefinition Width="100" MaxWidth="100" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock
+                    Grid.Column="0"
+                    Margin="20,0,0,0"
+                    Padding="5"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    FontSize="16"
+                    Foreground="White">
+                    <Run Text="Counter Strike" />
+                    <Run Foreground="{StaticResource UI_Gradient}" Text="Hunter" />
+                </TextBlock>
+
+                <StackPanel Grid.Column="2" Orientation="Horizontal">
+                    <Border
+                        Width="25"
+                        Height="25"
+                        Margin="0"
+                        Background="Transparent"
+                        Cursor="Hand">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="{Binding Minimize}" PassEventArgsToCommand="True" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                        <Grid>
+                            <Path
+                                Margin="5"
+                                Data="M20 250 c0 -19 7 -20 230 -20 223 0 230 1 230 20 0 19 -7 20 -230 20 -223 0 -230 -1 -230 -20z"
+                                Fill="White"
+                                RenderOptions.BitmapScalingMode="HighQuality"
+                                Stretch="Uniform" />
+                        </Grid>
+                        <Border.Triggers>
+                            <EventTrigger RoutedEvent="MouseEnter">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            FillBehavior="HoldEnd"
+                                            Storyboard.TargetProperty="Opacity"
+                                            From="1.0"
+                                            To="0.7"
+                                            Duration="00:00:00.2" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="MouseLeave">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            FillBehavior="HoldEnd"
+                                            Storyboard.TargetProperty="Opacity"
+                                            From="0.7"
+                                            To="1.0"
+                                            Duration="00:00:00.2" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Border.Triggers>
+                    </Border>
+                    <Border
+                        Width="25"
+                        Height="25"
+                        Margin="5,0,0,0"
+                        Background="Transparent"
+                        Cursor="Hand">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="{Binding Maximize}" PassEventArgsToCommand="True" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                        <Grid>
+                            <Path
+                                Margin="5"
+                                Data="M140 760 c-18 -18 -20 -31 -18 -103 3 -80 4 -82 28 -82 24 0 25 3 28 72 l3 72 72 3 c69 3 72 4 72 28 0 24 -2 25 -82 28 -72 2 -85 0 -103 -18z M574 765 c-14 -35 3 -45 75 -45 l70 0 3 -72 c3 -70 4 -73 28 -73 24 0 25 2 28 82 4 112 -7 123 -118 123 -62 0 -82 -3 -86 -15z M127 324 c-4 -4 -7 -43 -7 -86 0 -109 12 -120 123 -116 80 3 82 4 82 28 0 24 -3 25 -72 28 l-72 3 -3 72 c-3 64 -5 72 -23 75 -12 2 -24 0 -28 -4z M727 324 c-4 -4 -7 -38 -7 -75 l0 -68 -72 -3 c-70 -3 -73 -4 -73 -28 0 -24 2 -25 82 -28 72 -2 85 0 103 18 18 18 20 31 18 103 -3 74 -5 82 -23 85 -12 2 -24 0 -28 -4z"
+                                Fill="White"
+                                RenderOptions.BitmapScalingMode="HighQuality"
+                                Stretch="Uniform" />
+                        </Grid>
+                        <Border.Triggers>
+                            <EventTrigger RoutedEvent="MouseEnter">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            FillBehavior="HoldEnd"
+                                            Storyboard.TargetProperty="Opacity"
+                                            From="1.0"
+                                            To="0.7"
+                                            Duration="00:00:00.2" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="MouseLeave">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            FillBehavior="HoldEnd"
+                                            Storyboard.TargetProperty="Opacity"
+                                            From="0.7"
+                                            To="1.0"
+                                            Duration="00:00:00.2" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Border.Triggers>
+                    </Border>
+                    <Border
+                        Width="25"
+                        Height="25"
+                        Margin="5,0,0,0"
+                        Background="Transparent"
+                        Cursor="Hand">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="{Binding Close}" PassEventArgsToCommand="True" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                        <Grid>
+                            <Path
+                                Margin="5"
+                                Data="M 9.15625 6.3125 L 6.3125 9.15625 L 22.15625 25 L 6.21875 40.96875 L 9.03125 43.78125 L 25 27.84375 L 40.9375 43.78125 L 43.78125 40.9375 L 27.84375 25 L 43.6875 9.15625 L 40.84375 6.3125 L 25 22.15625 Z"
+                                Fill="White"
+                                RenderOptions.BitmapScalingMode="HighQuality"
+                                Stretch="Uniform" />
+                        </Grid>
+                        <Border.Triggers>
+                            <EventTrigger RoutedEvent="MouseEnter">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            FillBehavior="HoldEnd"
+                                            Storyboard.TargetProperty="Opacity"
+                                            From="1.0"
+                                            To="0.7"
+                                            Duration="00:00:00.2" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="MouseLeave">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            FillBehavior="HoldEnd"
+                                            Storyboard.TargetProperty="Opacity"
+                                            From="0.7"
+                                            To="1.0"
+                                            Duration="00:00:00.2" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Border.Triggers>
+                    </Border>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <Border
+            Grid.Row="1"
+            BorderBrush="{StaticResource UI_Body_Border_Brush}"
+            BorderThickness="3,0,3,3"
+            CornerRadius="0, 0, 10, 10">
+
+            <Border x:Name="UI_Body" CornerRadius="0, 0, 9, 9">
+                <Border.Background>
+                    <SolidColorBrush Color="#080808" />
+                </Border.Background>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="140" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid Grid.Column="1">
+                        <Frame
+                            x:Name="MainFrame"
+                            Margin="0,20,20,20"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            NavigationUIVisibility="Hidden"
+                            Opacity="0">
+                            <Frame.Style>
+                                <Style TargetType="Frame">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsExtendingWindowDimensions}" Value="True">
+                                            <DataTrigger.EnterActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <ThicknessAnimation
+                                                            FillBehavior="HoldEnd"
+                                                            Storyboard.TargetProperty="Margin"
+                                                            From="0,20,20,20"
+                                                            To="180,20,20,20"
+                                                            Duration="00:00:00.2" />
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </DataTrigger.EnterActions>
+                                            <DataTrigger.ExitActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <ThicknessAnimation
+                                                            FillBehavior="HoldEnd"
+                                                            Storyboard.TargetProperty="Margin"
+                                                            From="180,20,20,20"
+                                                            To="0,20,20,20"
+                                                            Duration="00:00:00.2" />
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </DataTrigger.ExitActions>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Frame.Style>
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Navigated">
+                                    <i:ControlStoryboardAction>
+                                        <i:ControlStoryboardAction.Storyboard>
+                                            <Storyboard>
+                                                <DoubleAnimation
+                                                    FillBehavior="HoldEnd"
+                                                    Storyboard.TargetName="MainFrame"
+                                                    Storyboard.TargetProperty="Opacity"
+                                                    From="0"
+                                                    To="1"
+                                                    Duration="00:00:00.2" />
+                                            </Storyboard>
+                                        </i:ControlStoryboardAction.Storyboard>
+                                    </i:ControlStoryboardAction>
+                                </i:EventTrigger>
+                                <i:EventTrigger EventName="Navigating">
+                                    <i:ControlStoryboardAction>
+                                        <i:ControlStoryboardAction.Storyboard>
+                                            <Storyboard>
+                                                <DoubleAnimation
+                                                    FillBehavior="HoldEnd"
+                                                    Storyboard.TargetName="MainFrame"
+                                                    Storyboard.TargetProperty="Opacity"
+                                                    From="1"
+                                                    To="0"
+                                                    Duration="00:00:00.2" />
+                                            </Storyboard>
+                                        </i:ControlStoryboardAction.Storyboard>
+                                    </i:ControlStoryboardAction>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Frame>
+                    </Grid>
+
+                    <Border
+                        x:Name="UI_Menubar"
+                        Margin="30,20,20,20"
+                        Background="{StaticResource UI_Header_Background}"
+                        CornerRadius="8">
+
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseEnter">
+                                <i:InvokeCommandAction Command="{Binding MenuBarExpand}" />
+                            </i:EventTrigger>
+                            <i:EventTrigger EventName="MouseLeave">
+                                <i:InvokeCommandAction Command="{Binding MenuBarReset}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding MenuBarIsExpanded}" Value="True">
+                                        <DataTrigger.EnterActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <ThicknessAnimation
+                                                        FillBehavior="HoldEnd"
+                                                        Storyboard.TargetProperty="Margin"
+                                                        From="30,20,20,20"
+                                                        To="30,20,-160,20"
+                                                        Duration="00:00:00.2" />
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </DataTrigger.EnterActions>
+                                        <DataTrigger.ExitActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <ThicknessAnimation
+                                                        FillBehavior="HoldEnd"
+                                                        Storyboard.TargetProperty="Margin"
+                                                        From="30,20,-160,20"
+                                                        To="30,20,20,20"
+                                                        Duration="00:00:00.2" />
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </DataTrigger.ExitActions>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="20" />
+                                <RowDefinition Height="60" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="60" />
+                                <RowDefinition Height="20" />
+
+                            </Grid.RowDefinitions>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="15" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="15" />
+                            </Grid.ColumnDefinitions>
+
+                            <Path
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Margin="10"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Data="M 97.381 42.988 C 80.687 45.471, 65.076 54.861, 55.026 68.465 C 50.060 75.187, 47.688 79.978, 44.851 89.012 C 42.547 96.350, 42.500 97.299, 42.500 136.500 L 42.500 176.500 45.305 181.272 C 49.294 188.059, 54.821 191.328, 63 191.738 C 68.605 192.019, 70.184 191.681, 74.468 189.282 C 79.848 186.270, 83.399 181.824, 84.984 176.118 C 85.570 174.008, 85.991 157.665, 85.994 136.907 C 86 101.583, 86.018 101.281, 88.327 96.907 C 89.606 94.483, 92.569 91.150, 94.910 89.500 L 99.167 86.500 137.834 86 L 176.500 85.500 181.272 82.695 C 188.059 78.706, 191.328 73.179, 191.738 65 C 192.019 59.395, 191.681 57.816, 189.282 53.532 C 186.290 48.188, 181.820 44.597, 176.248 43.058 C 172.152 41.927, 104.917 41.868, 97.381 42.988 M 334.748 43.415 C 324.895 46.962, 319.506 55.128, 320.198 65.459 C 320.715 73.168, 324.185 78.849, 330.728 82.695 L 335.500 85.500 374 86 C 417.589 86.566, 416.498 86.366, 422.486 94.882 L 425.500 99.167 426 137.834 L 426.500 176.500 429.305 181.272 C 433.294 188.059, 438.821 191.328, 447 191.738 C 452.605 192.019, 454.184 191.681, 458.468 189.282 C 463.969 186.201, 467.452 181.749, 469.076 175.719 C 469.783 173.093, 470.013 158.954, 469.754 134.120 C 469.317 92.266, 469.148 90.982, 462.216 77.013 C 456.975 66.452, 445.233 54.675, 435 49.716 C 420.626 42.751, 419.780 42.643, 377 42.338 C 346.632 42.122, 337.708 42.349, 334.748 43.415 M 246.197 130.132 C 241.368 132.533, 237.423 137.155, 235.427 142.748 C 234.565 145.162, 234.072 151.404, 234.044 160.250 C 234.006 172.168, 233.787 174, 232.400 174 C 229.513 174, 215.134 180.757, 208.168 185.388 C 200.244 190.656, 189.485 201.639, 184.283 209.772 C 180.306 215.989, 174 229.866, 174 232.400 C 174 233.776, 172.283 234.009, 161.750 234.067 C 145.937 234.155, 143.506 234.513, 138.384 237.515 C 131.033 241.823, 127.520 248.795, 128.190 257.748 C 128.744 265.165, 132.333 270.936, 138.728 274.695 C 143.293 277.378, 144.153 277.515, 158.581 277.837 L 173.662 278.173 175.813 284.837 C 182.968 307.002, 206.238 330.062, 228.039 336.593 L 233.827 338.327 234.163 353.413 C 234.485 367.847, 234.621 368.707, 237.305 373.272 C 241.159 379.829, 246.829 383.285, 254.582 383.804 C 263.719 384.416, 271.196 380.339, 275.314 372.500 C 277.113 369.076, 277.473 366.322, 277.812 353.377 L 278.208 338.254 282.354 337.026 C 305.903 330.052, 329.096 307.429, 336.521 284.192 L 338.445 278.171 353.472 277.836 C 367.842 277.515, 368.709 277.377, 373.272 274.695 C 379.829 270.841, 383.285 265.171, 383.804 257.418 C 384.409 248.392, 380.290 240.721, 372.780 236.888 C 368.102 234.501, 365.364 234.153, 350.500 234.059 L 338.500 233.983 336.662 228.086 C 329.763 205.951, 306.965 182.956, 284.837 175.813 L 278.173 173.662 277.837 158.581 C 277.527 144.689, 277.303 143.148, 275 139.038 C 271.223 132.296, 265.054 128.602, 257.004 128.265 C 251.973 128.053, 249.526 128.476, 246.197 130.132 M 245.383 214.887 C 234.754 217.635, 222.565 227.940, 217.451 238.500 C 214.789 243.996, 214.543 245.425, 214.522 255.500 C 214.501 265.825, 214.696 266.914, 217.701 273.259 C 221.939 282.203, 229.242 289.795, 237.740 294.086 C 244.286 297.392, 244.865 297.499, 256 297.462 C 266.624 297.428, 267.949 297.204, 273.392 294.528 C 281.948 290.322, 289.938 282.494, 294.017 274.322 C 297.260 267.824, 297.424 266.976, 297.461 256.480 C 297.503 244.543, 296.461 240.776, 290.762 232.266 C 286.645 226.120, 282.406 222.479, 274.545 218.339 C 268.156 214.974, 266.815 214.652, 258.045 214.378 C 252.795 214.215, 247.097 214.444, 245.383 214.887 M 54.138 322.160 C 49.134 324.646, 44.478 330.511, 42.924 336.284 C 42.217 338.906, 41.987 353.063, 42.246 377.880 C 42.682 419.630, 42.835 420.799, 49.716 435 C 54.672 445.227, 66.450 456.972, 77.013 462.220 C 91.310 469.324, 92.756 469.500, 137 469.500 L 176.500 469.500 181.272 466.695 C 188.059 462.706, 191.328 457.179, 191.738 449 C 192.019 443.395, 191.681 441.816, 189.282 437.532 C 186.290 432.188, 181.820 428.597, 176.248 427.058 C 174.330 426.528, 156.727 426.069, 137.130 426.038 C 102.003 425.981, 101.437 425.947, 97.009 423.685 C 94.444 422.375, 91.228 419.556, 89.509 417.112 L 86.500 412.833 86 374.166 L 85.500 335.500 83 331.038 C 79.223 324.296, 73.054 320.602, 65.004 320.265 C 59.950 320.052, 57.527 320.475, 54.138 322.160 M 438.646 321.949 C 433.324 324.681, 432.275 325.676, 429.192 330.920 L 426.500 335.500 426 374.166 L 425.500 412.833 422.491 417.112 C 420.772 419.556, 417.556 422.375, 414.991 423.685 C 410.563 425.947, 409.997 425.981, 374.870 426.038 C 355.273 426.069, 337.672 426.528, 335.757 427.057 C 317.507 432.096, 314.339 457.062, 330.728 466.695 L 335.500 469.500 375.500 469.500 C 414.585 469.500, 415.672 469.447, 423 467.168 C 445.055 460.312, 461.801 443.034, 467.746 421 C 469.279 415.320, 469.500 409.514, 469.500 375 L 469.500 335.500 467 331.038 C 463.228 324.304, 457.055 320.605, 449.004 320.254 C 444.076 320.039, 441.566 320.450, 438.646 321.949"
+                                RenderTransformOrigin="0.5,0.5"
+                                Stretch="Uniform">
+                                <Path.Triggers>
+                                    <EventTrigger RoutedEvent="Loaded">
+                                        <BeginStoryboard>
+                                            <Storyboard RepeatBehavior="Forever">
+                                                <DoubleAnimation
+                                                    Storyboard.TargetProperty="(Path.Fill).(LinearGradientBrush.RelativeTransform).(RotateTransform.Angle)"
+                                                    From="0"
+                                                    To="360"
+                                                    Duration="00:00:04" />
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                </Path.Triggers>
+
+                                <Path.Fill>
+                                    <LinearGradientBrush Opacity="1" StartPoint="0,0" EndPoint="1,0">
+                                        <LinearGradientBrush.RelativeTransform>
+                                            <RotateTransform Angle="0" CenterX="0.5" CenterY="0.5" />
+                                        </LinearGradientBrush.RelativeTransform>
+                                        <GradientStop Offset="0" Color="#0077ff" />
+                                        <GradientStop Offset="1" Color="Transparent" />
+                                    </LinearGradientBrush>
+                                </Path.Fill>
+
+                                <Path.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform />
+                                        <SkewTransform />
+                                        <RotateTransform Angle="30" />
+                                        <TranslateTransform />
+                                    </TransformGroup>
+                                </Path.RenderTransform>
+                            </Path>
+
+                            <ListBox
+                                Grid.Row="2"
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                ScrollViewer.CanContentScroll="False"
+                                ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                                ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                                SelectedIndex="-1"
+                                SelectionMode="Single">
+
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel IsItemsHost="True" Orientation="Vertical" />
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectionChanged">
+                                        <i:InvokeCommandAction Command="{Binding MenuBarSelect}" PassEventArgsToCommand="true" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+
+                                <navigation:NavigationTabViewModel
+                                    Height="50"
+                                    Margin="3.5,5,5,5"
+                                    Expanded="{Binding MenuBarIsExpanded, UpdateSourceTrigger=PropertyChanged}"
+                                    Icon="M490.134,185.472L338.966,34.304c-45.855-45.737-120.076-45.737-165.931,0L21.867,185.472   C7.819,199.445-0.055,218.457,0,238.272v221.397C0.047,488.568,23.475,511.976,52.374,512h407.253   c28.899-0.023,52.326-23.432,52.373-52.331V238.272C512.056,218.457,504.182,199.445,490.134,185.472z M448,448H341.334v-67.883   c0-44.984-36.467-81.451-81.451-81.451c0,0,0,0,0,0h-7.765c-44.984,0-81.451,36.467-81.451,81.451l0,0V448H64V238.272   c0.007-2.829,1.125-5.541,3.115-7.552L218.283,79.552c20.825-20.831,54.594-20.835,75.425-0.01c0.003,0.003,0.007,0.007,0.01,0.01   L444.886,230.72c1.989,2.011,3.108,4.723,3.115,7.552V448z"
+                                    IsEnabled="False"
+                                    ModelName="{DynamicResource Quick_Inspection_Tab}"
+                                    ModelTabIndex="0" />
+
+                                <navigation:NavigationTabViewModel
+                                    Height="50"
+                                    Margin="3.5,5,5,5"
+                                    Expanded="{Binding MenuBarIsExpanded, UpdateSourceTrigger=PropertyChanged}"
+                                    Icon="m23.395,11.231c-.571-.767-1.441-1.213-2.395-1.23v-1.5c0-3.033-2.468-5.5-5.5-5.5h-4.056c-.077,0-.155-.018-.224-.053l-3.155-1.578c-.483-.241-1.024-.369-1.565-.369h-2C2.019,1,0,3.019,0,5.5v12c0,3.033,2.468,5.5,5.5,5.5h11.558c2.447,0,4.565-1.575,5.269-3.919l1.544-5.147c.28-.935.106-1.919-.476-2.702Zm-18.528,1.789l-1.784,5.119c-.054-.204-.082-.418-.082-.638v-9.5h14.95c.033.162.05.329.05.5v1.5h-8.885c-1.913,0-3.62,1.213-4.249,3.02Zm14.587,5.199c-.32,1.066-1.282,1.782-2.396,1.782H5.61l2.089-5.994c.209-.602.778-1.006,1.416-1.006h11.882l-1.544,5.218Z"
+                                    ModelName="{DynamicResource Analyze_Files_Tab}"
+                                    ModelTabIndex="1" />
+
+                                <navigation:NavigationTabViewModel
+                                    Height="50"
+                                    Margin="3.5,5,5,5"
+                                    Expanded="{Binding MenuBarIsExpanded, UpdateSourceTrigger=PropertyChanged}"
+                                    Icon="M20.5,2H3.5C1.57,2,0,3.57,0,5.5V22H24V5.5c0-1.93-1.57-3.5-3.5-3.5Zm.5,17H3V5.5c0-.276,.225-.5,.5-.5H20.5c.275,0,.5,.224,.5,.5v13.5Zm-6-11h4v3h-4v-3Zm0,5h4v3h-4v-3Zm-1.5-.5c0,.88-.262,1.694-.699,2.387l-2.801-2.801v-3.966c2.002,.456,3.5,2.239,3.5,4.38Zm-5.5,.414l3.387,3.387c-.693,.436-1.508,.699-2.387,.699-2.485,0-4.5-2.015-4.5-4.5,0-2.14,1.498-3.924,3.5-4.38v4.794Z"
+                                    ModelName="{DynamicResource Analyze_Registry_Tab}"
+                                    ModelTabIndex="2" />
+
+                                <navigation:NavigationTabViewModel
+                                    Height="50"
+                                    Margin="3.5,5,5,5"
+                                    Expanded="{Binding MenuBarIsExpanded, UpdateSourceTrigger=PropertyChanged}"
+                                    Icon="M12,0A12,12,0,1,0,24,12,12.013,12.013,0,0,0,12,0Zm8.941,11H17.463a18.368,18.368,0,0,0-2.289-7.411A9.013,9.013,0,0,1,20.941,11ZM9.685,14h4.63A16.946,16.946,0,0,1,12,19.9,16.938,16.938,0,0,1,9.685,14Zm-.132-3A16.246,16.246,0,0,1,12,4.1,16.241,16.241,0,0,1,14.447,11ZM8.826,3.589A18.368,18.368,0,0,0,6.537,11H3.059A9.013,9.013,0,0,1,8.826,3.589ZM3.232,14H6.641a18.906,18.906,0,0,0,2.185,6.411A9.021,9.021,0,0,1,3.232,14Zm11.942,6.411A18.884,18.884,0,0,0,17.359,14h3.409A9.021,9.021,0,0,1,15.174,20.411Z"
+                                    ModelName="{DynamicResource Analyze_Browsers_Tab}"
+                                    ModelTabIndex="3" />
+
+                                <navigation:NavigationTabViewModel
+                                    Height="50"
+                                    Margin="3.5,5,5,5"
+                                    Expanded="{Binding MenuBarIsExpanded, UpdateSourceTrigger=PropertyChanged}"
+                                    Icon="M3715 4744 c-335 -37 -611 -168 -833 -398 -213 -220 -338 -496 -360 -793 l-7 -93 -402 -574 -402 -573 -133 -6 c-157 -7 -257 -30 -376 -87 -46 -22 -89 -40 -96 -40 -6 0 -230 88 -496 196 -267 107 -513 206 -548 219 l-62 24 2 -610 3 -611 325 -130 325 -130 23 -76 c106 -345 396 -604 755 -673 90 -18 277 -15 372 6 385 82 677 380 753 768 l17 87 625 455 625 455 61 0 c33 0 103 7 155 16 257 44 500 168 685 349 509 500 525 1297 35 1817 -182 194 -449 338 -709 383 -89 16 -272 26 -337 19z m315 -449 c97 -25 275 -116 346 -177 220 -190 326 -436 311 -718 -7 -122 -33 -224 -84 -324 -198 -397 -635 -581 -1054 -447 -136 44 -237 107 -345 215 -107 107 -170 207 -216 346 -31 91 -32 102 -32 255 -1 182 10 235 75 375 124 264 374 447 674 494 58 9 261 -3 325 -19z m-2246 -2265 c126 -32 228 -91 326 -190 137 -137 204 -290 205 -470 0 -91 -2 -99 -39 -175 -32 -64 -57 -98 -131 -170 -184 -181 -417 -289 -650 -302 -155 -8 -277 29 -384 115 -49 40 -138 155 -123 160 5 1 88 -29 184 -67 211 -84 273 -101 370 -101 152 0 283 55 393 165 112 112 166 237 168 389 1 138 -34 243 -118 354 -70 93 -153 146 -354 227 -122 49 -167 71 -154 76 40 16 229 9 307 -11z M3695 4136 c-244 -46 -437 -211 -528 -450 -30 -77 -32 -88 -32 -231 0 -138 2 -156 27 -223 40 -110 84 -178 174 -268 142 -143 323 -213 524 -201 179 10 329 77 454 203 83 82 136 168 173 279 24 70 27 96 27 210 0 116 -3 139 -28 210 -41 119 -80 181 -175 276 -132 132 -272 194 -456 204 -54 3 -118 -1 -160 -9z"
+                                    ModelName="{DynamicResource Analyze_Steam_Tab}"
+                                    ModelTabIndex="4" />
+                            </ListBox>
+
+                            <control:GradientIconButtonControl
+                                Grid.Row="3"
+                                Grid.Column="1"
+                                Width="60"
+                                Height="60"
+                                HorizontalAlignment="Left"
+                                Icon="M 246 33.021 C 243.525 33.429, 239.925 34.468, 238 35.329 C 233.042 37.546, 211.986 49, 211 50.015 C 210.725 50.298, 208.593 51.423, 206.261 52.515 C 203.930 53.607, 202.018 54.837, 202.011 55.250 C 202.005 55.663, 201.386 56, 200.635 56 C 199.884 56, 198.100 56.920, 196.670 58.045 C 195.240 59.169, 193.717 60.066, 193.285 60.037 C 192.853 60.007, 191.793 60.550, 190.929 61.242 C 190.065 61.934, 188.719 62.649, 187.939 62.830 C 187.158 63.012, 186.184 63.687, 185.775 64.330 C 185.365 64.974, 185.024 65.107, 185.015 64.628 C 185.007 64.148, 184.438 64.212, 183.750 64.771 C 182.433 65.841, 179.054 67.757, 170 72.564 C 166.975 74.171, 164.275 75.720, 164 76.008 C 163.725 76.295, 161.593 77.423, 159.261 78.515 C 156.930 79.607, 155.018 80.838, 155.011 81.250 C 155.005 81.662, 154.386 82, 153.635 82 C 152.884 82, 151.144 82.885, 149.769 83.967 C 148.393 85.049, 146.983 85.649, 146.634 85.301 C 146.285 84.952, 146 85.192, 146 85.833 C 146 86.475, 145.386 87, 144.635 87 C 143.884 87, 142.084 87.933, 140.635 89.073 C 139.186 90.212, 138 90.832, 138 90.450 C 138 90.068, 137.438 90.212, 136.750 90.771 C 136.063 91.330, 132.800 93.237, 129.500 95.010 C 126.200 96.782, 121.025 99.601, 118 101.275 C 114.975 102.948, 111.600 104.809, 110.500 105.409 C 109.400 106.009, 108.275 106.732, 108 107.015 C 107.725 107.298, 105.593 108.423, 103.261 109.515 C 100.930 110.607, 99.018 111.838, 99.011 112.250 C 99.005 112.662, 98.386 113, 97.635 113 C 96.884 113, 95.197 113.844, 93.885 114.876 C 92.573 115.908, 91.177 116.695, 90.782 116.626 C 90.388 116.557, 89.150 117.283, 88.032 118.240 C 86.915 119.197, 86 119.690, 86 119.335 C 86 118.980, 85.213 119.403, 84.250 120.274 C 83.288 121.145, 82.177 121.777, 81.782 121.679 C 81.388 121.580, 80.038 122.379, 78.782 123.454 C 77.527 124.529, 76.340 125.251, 76.145 125.059 C 74.098 123.042, 55.988 143.554, 57.564 146.104 C 57.869 146.597, 57.566 147, 56.892 147 C 56.218 147, 55.951 147.284, 56.298 147.631 C 56.645 147.979, 56.459 149.143, 55.883 150.219 C 53.973 153.788, 53.499 157.404, 53.638 167.338 C 53.719 173.035, 54.245 177.645, 54.888 178.288 C 55.500 178.900, 56 180.228, 56 181.240 C 56 182.839, 58.123 187.348, 61.500 192.922 C 64.603 198.043, 77.172 209, 79.943 209 C 80.407 209, 81.045 209.675, 81.362 210.500 C 81.678 211.325, 82.626 212, 83.469 212 C 84.311 212, 85 212.525, 85 213.167 C 85 213.808, 85.241 214.093, 85.535 213.798 C 85.829 213.504, 87.452 214.554, 89.141 216.132 C 90.830 217.709, 92.646 219, 93.177 219 C 93.708 219, 94.731 219.563, 95.449 220.250 C 96.167 220.938, 97.762 222.175, 98.993 223 C 100.224 223.825, 102.263 225.287, 103.523 226.250 C 104.784 227.213, 106.285 228, 106.858 228 C 107.431 228, 108.260 228.563, 108.700 229.250 C 109.539 230.562, 115.529 235, 116.460 235 C 116.757 235, 117.787 235.704, 118.750 236.564 C 122.915 240.288, 129.600 244.981, 130.750 244.990 C 131.438 244.996, 132.002 245.338, 132.005 245.750 C 132.008 246.162, 135.045 248.515, 138.755 250.977 C 142.465 253.440, 145.725 255.690, 146 255.977 C 147.385 257.425, 153.050 261, 153.960 261 C 154.532 261, 155 261.370, 155 261.822 C 155 262.719, 162.679 268, 163.983 268 C 164.425 268, 165.045 268.675, 165.362 269.500 C 165.678 270.325, 166.626 271, 167.469 271 C 168.311 271, 169 271.525, 169 272.167 C 169 272.808, 169.241 273.093, 169.535 272.798 C 169.829 272.504, 171.452 273.554, 173.141 275.132 C 174.830 276.709, 176.646 278, 177.177 278 C 177.708 278, 178.731 278.563, 179.449 279.250 C 180.167 279.938, 181.762 281.175, 182.993 282 C 184.224 282.825, 186.263 284.288, 187.523 285.250 C 188.784 286.212, 190.285 287, 190.858 287 C 191.431 287, 192.260 287.563, 192.700 288.250 C 193.539 289.562, 199.529 294, 200.460 294 C 200.757 294, 201.788 294.704, 202.750 295.564 C 206.222 298.668, 213.518 303.981, 214.321 303.990 C 214.773 303.996, 215.842 304.700, 216.697 305.555 C 219.542 308.399, 232.886 317, 234.455 317 C 235.305 317, 236 317.379, 236 317.842 C 236 319.188, 246.970 322.078, 253.324 322.405 C 260.016 322.749, 268.124 321.379, 274.500 318.825 C 278.028 317.412, 290.719 309.264, 291.592 307.851 C 291.923 307.315, 293.163 306.457, 294.347 305.945 C 295.531 305.432, 300.550 302.075, 305.500 298.485 C 310.450 294.895, 316.300 290.747, 318.500 289.267 C 320.700 287.787, 324.278 285.209, 326.451 283.538 C 328.624 281.867, 331.201 280.050, 332.177 279.500 C 336.333 277.158, 352.640 265.487, 354.174 263.757 C 355.095 262.718, 356.141 261.944, 356.499 262.037 C 357.126 262.198, 362.777 258.379, 372.828 251 C 375.450 249.075, 378.334 247.050, 379.236 246.500 C 384.266 243.432, 397.922 233.637, 400.476 231.265 C 402.113 229.744, 403.688 228.619, 403.976 228.765 C 404.264 228.910, 406.721 227.335, 409.436 225.265 C 412.151 223.194, 415.168 221.050, 416.141 220.500 C 429.264 213.081, 451 195.019, 451 191.534 C 451 190.690, 451.477 190, 452.059 190 C 452.641 190, 452.859 189.581, 452.543 189.069 C 452.226 188.557, 452.452 187.838, 453.045 187.472 C 455.850 185.739, 458.990 171.532, 458.426 163.125 C 458.219 160.031, 458.010 156.713, 457.962 155.750 C 457.915 154.788, 457.427 154, 456.879 154 C 456.331 154, 456.169 153.535, 456.520 152.968 C 457.259 151.771, 452.162 140.557, 449.384 137.269 C 448.348 136.042, 446.685 133.896, 445.688 132.499 C 444.691 131.102, 443.454 130.220, 442.938 130.538 C 442.422 130.857, 442 130.682, 442 130.149 C 442 128.307, 418.537 114, 415.515 114 C 414.682 114, 414 113.638, 414 113.196 C 414 112.429, 409.412 109.732, 398.500 104.087 C 395.750 102.664, 393.259 101.180, 392.965 100.789 C 392.671 100.398, 390.421 99.132, 387.965 97.977 C 385.509 96.822, 380.575 94.129, 377 91.992 C 373.425 89.856, 369.919 88.084, 369.208 88.054 C 368.498 88.024, 367.055 87.213, 366.003 86.250 C 364.951 85.287, 360.132 82.475, 355.295 80 C 350.458 77.525, 346.275 75.210, 346 74.856 C 345.725 74.501, 343.383 73.151, 340.797 71.856 C 338.210 70.560, 331.103 66.688, 325.003 63.250 C 318.904 59.813, 313.258 57, 312.457 57 C 311.655 57, 311 56.638, 311 56.196 C 311 55.429, 306.412 52.732, 295.500 47.087 C 292.750 45.664, 290.275 44.210, 290 43.856 C 289.064 42.649, 273.531 34.964, 271 34.455 C 270.175 34.289, 269.500 34.084, 269.500 34 C 269.500 32.685, 252.368 31.971, 246 33.021 M 64.158 247.853 C 62.869 248.976, 61.503 250.031, 61.121 250.197 C 60.740 250.364, 59.398 251.967, 58.139 253.760 C 55.590 257.390, 55.326 264.467, 57.571 269 C 59.310 272.510, 69.474 281, 71.937 281 C 72.404 281, 73.045 281.675, 73.362 282.500 C 73.678 283.325, 74.626 284, 75.469 284 C 76.311 284, 77 284.525, 77 285.167 C 77 285.808, 77.241 286.093, 77.535 285.798 C 77.829 285.504, 79.452 286.554, 81.141 288.132 C 82.830 289.709, 84.646 291, 85.177 291 C 85.708 291, 86.731 291.563, 87.449 292.250 C 88.167 292.938, 89.762 294.175, 90.993 295 C 92.224 295.825, 94.263 297.288, 95.523 298.250 C 96.784 299.212, 98.285 300, 98.858 300 C 99.431 300, 100.260 300.563, 100.700 301.250 C 101.539 302.562, 107.529 307, 108.460 307 C 108.757 307, 109.787 307.704, 110.750 308.564 C 114.915 312.288, 121.600 316.981, 122.750 316.990 C 123.438 316.996, 124 317.341, 124 317.758 C 124 318.175, 127.037 320.537, 130.750 323.008 C 134.463 325.479, 137.725 327.725, 138 328 C 139.467 329.467, 145.056 333, 145.910 333 C 146.455 333, 147.260 333.563, 147.700 334.250 C 148.539 335.562, 154.529 340, 155.460 340 C 155.757 340, 156.787 340.704, 157.750 341.564 C 161.915 345.288, 168.600 349.981, 169.750 349.990 C 170.438 349.996, 171.002 350.337, 171.005 350.750 C 171.008 351.163, 174.045 353.515, 177.755 355.977 C 181.465 358.440, 184.725 360.690, 185 360.977 C 185.275 361.265, 186.850 362.436, 188.500 363.581 C 190.150 364.725, 193.858 367.313, 196.740 369.331 C 199.622 371.349, 202.386 373, 202.883 373 C 203.380 373, 204.045 373.675, 204.362 374.500 C 204.678 375.325, 205.626 376, 206.469 376 C 207.311 376, 208 376.525, 208 377.167 C 208 377.808, 208.241 378.093, 208.535 377.798 C 208.829 377.504, 210.452 378.554, 212.141 380.132 C 213.830 381.709, 215.646 383, 216.177 383 C 216.708 383, 217.770 383.563, 218.537 384.250 C 222.064 387.413, 227.756 391.170, 228.409 390.766 C 228.645 390.620, 229.944 391.538, 231.295 392.807 C 232.645 394.076, 237.015 396.219, 241.005 397.568 C 247.252 399.682, 249.594 399.964, 257.879 399.598 C 269.795 399.072, 277.886 396.059, 287.451 388.587 C 289.624 386.889, 292.201 385.050, 293.177 384.500 C 297.229 382.217, 313.621 370.509, 315.102 368.841 C 315.982 367.848, 316.995 367.328, 317.352 367.685 C 317.708 368.042, 318 367.808, 318 367.167 C 318 366.525, 318.446 366, 318.991 366 C 319.537 366, 321.971 364.538, 324.401 362.750 C 330.998 357.898, 336.933 353.685, 339.547 352 C 346.994 347.197, 358.917 338.642, 361.476 336.265 C 363.113 334.744, 364.568 333.725, 364.709 334 C 364.851 334.275, 367.415 332.587, 370.408 330.250 C 373.401 327.913, 376.175 326, 376.572 326 C 376.969 326, 379.216 324.425, 381.565 322.500 C 383.915 320.575, 386.083 319, 386.384 319 C 386.685 319, 391.476 315.738, 397.031 311.750 C 402.586 307.762, 408.873 303.338, 411.002 301.917 C 413.131 300.497, 416.582 298.022, 418.671 296.417 C 420.760 294.813, 423.252 293.050, 424.210 292.500 C 428.550 290.008, 444.669 278.454, 446.174 276.757 C 447.095 275.718, 448.201 274.973, 448.631 275.102 C 449.061 275.230, 450.714 273.727, 452.305 271.762 C 456.415 266.684, 456.894 259.300, 453.482 253.609 C 452.127 251.349, 451.015 249.906, 451.009 250.403 C 451.004 250.900, 450.103 250.271, 449.006 249.007 C 445.824 245.338, 434.315 244.883, 430.820 248.289 C 430.094 248.996, 427.770 250.634, 425.655 251.927 C 423.541 253.221, 420.776 255.315, 419.512 256.579 C 418.247 257.844, 417.010 258.677, 416.763 258.429 C 416.516 258.182, 415.145 259.063, 413.717 260.387 C 412.288 261.710, 410.755 262.959, 410.310 263.163 C 407.409 264.485, 402 268.349, 402 269.099 C 402 269.594, 401.532 270, 400.960 270 C 400.068 270, 394.506 273.494, 393 275 C 392.725 275.275, 389.462 277.521, 385.750 279.992 C 382.037 282.463, 379 284.825, 379 285.242 C 379 285.659, 378.438 286.004, 377.750 286.010 C 376.600 286.019, 369.915 290.712, 365.750 294.436 C 364.788 295.296, 363.757 296, 363.460 296 C 362.529 296, 356.539 300.438, 355.700 301.750 C 355.260 302.438, 354.431 303, 353.858 303 C 353.285 303, 351.784 303.788, 350.523 304.750 C 349.263 305.712, 347.224 307.175, 345.993 308 C 344.762 308.825, 343.167 310.063, 342.449 310.750 C 341.731 311.438, 340.708 312, 340.177 312 C 339.646 312, 337.830 313.291, 336.141 314.868 C 334.452 316.446, 332.829 317.496, 332.535 317.202 C 332.241 316.907, 332 317.192, 332 317.833 C 332 318.475, 331.311 319, 330.469 319 C 329.626 319, 328.678 319.675, 328.362 320.500 C 328.045 321.325, 327.425 322, 326.983 322 C 325.679 322, 318 327.281, 318 328.178 C 318 328.630, 317.532 329, 316.960 329 C 316.050 329, 310.385 332.575, 309 334.023 C 308.725 334.310, 305.465 336.560, 301.755 339.023 C 298.045 341.485, 295.008 343.837, 295.005 344.250 C 295.002 344.663, 294.438 345.004, 293.750 345.010 C 292.600 345.019, 285.915 349.712, 281.750 353.436 C 280.788 354.296, 279.757 355, 279.460 355 C 278.733 355, 272.659 359.283, 271.885 360.340 C 271.276 361.173, 270.383 361.738, 263.931 365.379 C 261.921 366.513, 258.553 367.279, 255.433 367.311 C 250.988 367.358, 249.548 366.838, 245.133 363.597 C 242.310 361.525, 240 360.111, 240 360.455 C 240 360.799, 238.762 359.931, 237.250 358.526 C 234.873 356.317, 221.073 346.450, 216.236 343.500 C 215.334 342.950, 212.450 340.925, 209.828 339 C 199.777 331.621, 194.126 327.802, 193.499 327.963 C 193.141 328.056, 192.095 327.282, 191.174 326.243 C 189.669 324.546, 173.550 312.992, 169.210 310.500 C 168.252 309.950, 165.760 308.187, 163.671 306.583 C 161.582 304.978, 158.131 302.503, 156.002 301.083 C 153.873 299.662, 147.586 295.238, 142.031 291.250 C 136.476 287.262, 131.685 284, 131.384 284 C 131.083 284, 128.915 282.425, 126.565 280.500 C 124.216 278.575, 121.833 277, 121.269 277 C 120.706 277, 119.693 276.335, 119.018 275.521 C 118.343 274.708, 114.800 272.013, 111.145 269.533 C 107.490 267.053, 100.675 262.329, 96 259.035 C 91.325 255.742, 86.660 252.474, 85.634 251.774 C 84.608 251.073, 82.615 249.616, 81.204 248.536 C 79.500 247.230, 76.605 246.444, 72.570 246.191 C 67.545 245.876, 66.097 246.162, 64.158 247.853 M 69.048 325.964 C 68.249 326.461, 67.237 326.646, 66.798 326.375 C 66.359 326.104, 66 326.385, 66 327 C 66 327.615, 65.604 327.873, 65.119 327.573 C 64.043 326.909, 58.565 331.741, 57.265 334.500 C 55.675 337.876, 55.830 344.840, 57.578 348.524 C 59.154 351.844, 61.929 354.642, 66.977 358 C 68.217 358.825, 70.263 360.288, 71.523 361.250 C 72.784 362.212, 74.285 363, 74.858 363 C 75.431 363, 76.260 363.563, 76.700 364.250 C 77.539 365.562, 83.529 370, 84.460 370 C 84.757 370, 85.787 370.704, 86.750 371.564 C 90.915 375.288, 97.600 379.981, 98.750 379.990 C 99.438 379.996, 100 380.341, 100 380.758 C 100 381.175, 103.037 383.537, 106.750 386.008 C 110.463 388.479, 113.725 390.725, 114 391 C 115.467 392.467, 121.056 396, 121.910 396 C 122.455 396, 123.260 396.563, 123.700 397.250 C 124.539 398.562, 130.529 403, 131.460 403 C 131.757 403, 132.787 403.704, 133.750 404.564 C 137.915 408.288, 144.600 412.981, 145.750 412.990 C 146.438 412.996, 147.002 413.337, 147.005 413.750 C 147.008 414.163, 150.045 416.515, 153.755 418.977 C 157.465 421.440, 160.725 423.690, 161 423.977 C 162.385 425.425, 168.050 429, 168.960 429 C 169.532 429, 170 429.370, 170 429.822 C 170 430.719, 177.679 436, 178.983 436 C 179.425 436, 180.045 436.675, 180.362 437.500 C 180.678 438.325, 181.626 439, 182.469 439 C 183.311 439, 184 439.477, 184 440.059 C 184 440.641, 184.450 440.840, 185 440.500 C 185.550 440.160, 186 440.354, 186 440.931 C 186 441.508, 188.588 443.670, 191.750 445.737 C 194.912 447.804, 197.725 449.721, 198 449.997 C 199.451 451.456, 205.054 455, 205.910 455 C 206.455 455, 207.260 455.563, 207.700 456.250 C 208.760 457.906, 214.640 462, 215.960 462 C 216.532 462, 217 462.406, 217 462.901 C 217 463.397, 218.463 464.743, 220.250 465.892 C 222.037 467.042, 225.750 469.512, 228.500 471.382 C 231.250 473.252, 233.838 474.579, 234.250 474.332 C 234.662 474.084, 235 474.297, 235 474.804 C 235 477.021, 246.523 479.500, 256.500 479.429 C 265.278 479.367, 267.359 478.993, 273.532 476.368 C 279.765 473.717, 288.475 468.198, 301.660 458.546 C 308.492 453.544, 314.075 449.593, 316.563 448 C 324.072 443.191, 337.745 433.369, 339.174 431.757 C 340.095 430.718, 341.051 430.011, 341.298 430.184 C 341.728 430.486, 347.523 426.565, 357.828 419 C 360.450 417.075, 363.334 415.050, 364.236 414.500 C 369.266 411.432, 382.922 401.637, 385.476 399.265 C 387.113 397.744, 388.568 396.725, 388.709 397 C 388.851 397.275, 391.415 395.587, 394.408 393.250 C 397.401 390.913, 400.175 389, 400.572 389 C 400.969 389, 403.140 387.504, 405.397 385.676 C 407.654 383.849, 410.175 382.053, 411 381.687 C 411.825 381.321, 416.550 378.083, 421.500 374.493 C 426.450 370.903, 433.490 365.939, 437.145 363.461 C 440.800 360.984, 444.343 358.292, 445.018 357.479 C 445.693 356.665, 446.605 356, 447.046 356 C 448.698 356, 453.885 349.878, 454.939 346.684 C 456.665 341.456, 455.120 333.966, 451.592 330.454 C 446.057 324.943, 437.991 324.163, 430.705 328.433 C 428.117 329.949, 426 331.597, 426 332.095 C 426 332.593, 425.508 333, 424.908 333 C 424.307 333, 422.784 333.788, 421.523 334.750 C 420.263 335.712, 418.392 337.062, 417.366 337.750 C 404.633 346.278, 395 353.303, 395 354.060 C 395 354.577, 394.325 355, 393.500 355 C 392.675 355, 391.100 355.900, 390 357 C 388.900 358.100, 387.757 359, 387.460 359 C 386.529 359, 380.539 363.438, 379.700 364.750 C 379.260 365.438, 378.431 366, 377.858 366 C 377.285 366, 375.784 366.788, 374.523 367.750 C 373.263 368.713, 371.224 370.175, 369.993 371 C 368.762 371.825, 367.167 373.063, 366.449 373.750 C 365.731 374.438, 364.708 375, 364.177 375 C 363.646 375, 361.830 376.291, 360.141 377.868 C 358.452 379.446, 356.829 380.496, 356.535 380.202 C 356.241 379.907, 356 380.192, 356 380.833 C 356 381.475, 355.311 382, 354.469 382 C 353.626 382, 352.678 382.675, 352.362 383.500 C 352.045 384.325, 351.425 385, 350.983 385 C 349.679 385, 342 390.281, 342 391.178 C 342 391.630, 341.532 392, 340.960 392 C 340.050 392, 334.385 395.575, 333 397.023 C 332.725 397.310, 329.465 399.560, 325.755 402.023 C 322.045 404.485, 319.008 406.837, 319.005 407.250 C 319.002 407.663, 318.438 408.004, 317.750 408.010 C 316.600 408.019, 309.915 412.712, 305.750 416.436 C 304.788 417.296, 303.757 418, 303.460 418 C 302.529 418, 296.539 422.438, 295.700 423.750 C 295.260 424.438, 294.431 425, 293.858 425 C 293.285 425, 291.784 425.788, 290.523 426.750 C 289.263 427.712, 287.224 429.175, 285.993 430 C 284.762 430.825, 283.248 431.950, 282.627 432.500 C 282.007 433.050, 280.324 434.106, 278.886 434.846 C 277.448 435.587, 275.106 437.274, 273.680 438.596 C 272.254 439.918, 270.726 441, 270.283 441 C 269.841 441, 268.247 442.143, 266.740 443.540 C 265.233 444.938, 264 445.783, 264 445.418 C 264 445.053, 263.402 445.251, 262.672 445.858 C 259.014 448.893, 250.668 447.386, 243.797 442.450 C 241.156 440.552, 238.735 439, 238.416 439 C 238.097 439, 235.915 437.425, 233.565 435.500 C 231.216 433.575, 228.969 432, 228.572 432 C 228.175 432, 225.460 430.134, 222.540 427.853 C 219.619 425.572, 216.841 423.686, 216.365 423.662 C 215.889 423.637, 214.375 422.572, 213 421.294 C 210.817 419.266, 196.846 409.311, 192.236 406.500 C 191.334 405.950, 188.450 403.925, 185.828 402 C 175.777 394.621, 170.126 390.802, 169.499 390.963 C 169.141 391.056, 168.095 390.282, 167.174 389.243 C 165.745 387.631, 152.072 377.809, 144.563 373 C 142.023 371.373, 138.056 368.550, 126.180 359.917 C 121.956 356.847, 116.475 353.022, 114 351.417 C 111.525 349.813, 109.350 348.163, 109.167 347.750 C 108.983 347.337, 108.251 347, 107.539 347 C 106.827 347, 105.716 346.363, 105.070 345.584 C 103.444 343.625, 87.210 332.432, 82.250 329.850 C 81.013 329.206, 80 328.350, 80 327.948 C 80 327.262, 77.104 326.292, 72.500 325.433 C 71.400 325.228, 69.846 325.467, 69.048 325.964"
+                                IsEnabled="{Binding TasksWorking, UpdateSourceTrigger=PropertyChanged}">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="MouseLeftButtonDown">
+                                        <i:InvokeCommandAction Command="{Binding OpenTaskMenu}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </control:GradientIconButtonControl>
+
+                            <Border
+                                Grid.Row="3"
+                                Grid.Column="1"
+                                Width="20"
+                                Height="20"
+                                Margin="40,0,0,40"
+                                HorizontalAlignment="Left"
+                                Background="{StaticResource UI_Gradient}"
+                                CornerRadius="10">
+                                <Label
+                                    Padding="0"
+                                    HorizontalContentAlignment="Center"
+                                    VerticalContentAlignment="Center"
+                                    Content="{Binding WorkingTasksCount, UpdateSourceTrigger=PropertyChanged}"
+                                    FontSize="12"
+                                    Foreground="White" />
+                            </Border>
+
+                            <Label
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Grid.ColumnSpan="2"
+                                Margin="75,0,0,0"
+                                HorizontalContentAlignment="Left"
+                                VerticalContentAlignment="Center"
+                                Content="1.0.0.0"
+                                FontSize="16"
+                                Foreground="DarkGray"
+                                Visibility="{Binding MenuBarIsExpanded, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToVisibilityConverter}}" />
+
+                            <control:GradientButtonControl
+                                Grid.Row="3"
+                                Grid.Column="1"
+                                Grid.ColumnSpan="2"
+                                Width="165"
+                                Height="60"
+                                Margin="75,0,0,0"
+                                HorizontalAlignment="Left"
+                                BtnCornerRadius="10, 10, 10, 10"
+                                FontSize="16"
+                                Text="{DynamicResource Settings_Button_Text}"
+                                Visibility="{Binding MenuBarIsExpanded, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="MouseLeftButtonDown">
+                                        <i:InvokeCommandAction Command="{Binding OpenSettingsMenu}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </control:GradientButtonControl>
+
+                        </Grid>
+
+                    </Border>
+
+                </Grid>
+            </Border>
+        </Border>
+
+        <ListBox
+            Grid.Row="1"
+            HorizontalContentAlignment="Right"
+            d:IsHidden="True"
+            Background="Transparent"
+            BorderThickness="0"
+            IsHitTestVisible="False"
+            ItemsSource="{Binding AppNotifications, UpdateSourceTrigger=PropertyChanged}"
+            ScrollViewer.CanContentScroll="False"
+            ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+            ScrollViewer.VerticalScrollBarVisibility="Hidden">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Border
+                        Height="40"
+                        Margin="0,10,-200,0"
+                        CornerRadius="5"
+                        Opacity="1">
+
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IntMessageType}" Value="0">
+                                        <DataTrigger.Setters>
+                                            <Setter Property="Background" Value="{StaticResource UI_Error_Gradient}" />
+                                        </DataTrigger.Setters>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding IntMessageType}" Value="1">
+                                        <DataTrigger.Setters>
+                                            <Setter Property="Background" Value="{StaticResource UI_Success_Gradient}" />
+                                        </DataTrigger.Setters>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding IntMessageType}" Value="2">
+                                        <DataTrigger.Setters>
+                                            <Setter Property="Background" Value="{StaticResource UI_Gradient}" />
+                                        </DataTrigger.Setters>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+
+                        <Border.Triggers>
+                            <EventTrigger RoutedEvent="Border.Loaded">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ThicknessAnimationUsingKeyFrames
+                                            FillBehavior="HoldEnd"
+                                            Storyboard.TargetProperty="Margin"
+                                            Duration="00:00:00.4">
+                                            <EasingThicknessKeyFrame KeyTime="00:00:00.2" Value="0,10,-20,0">
+                                                <EasingThicknessKeyFrame.EasingFunction>
+                                                    <CubicEase EasingMode="EaseOut" />
+                                                </EasingThicknessKeyFrame.EasingFunction>
+                                            </EasingThicknessKeyFrame>
+                                            <EasingThicknessKeyFrame KeyTime="00:00:00.3" Value="0,10,30,0">
+                                                <EasingThicknessKeyFrame.EasingFunction>
+                                                    <CubicEase EasingMode="EaseIn" />
+                                                </EasingThicknessKeyFrame.EasingFunction>
+                                            </EasingThicknessKeyFrame>
+                                            <EasingThicknessKeyFrame KeyTime="00:00:00.4" Value="0,10,10,0">
+                                                <EasingThicknessKeyFrame.EasingFunction>
+                                                    <BounceEase EasingMode="EaseOut" />
+                                                </EasingThicknessKeyFrame.EasingFunction>
+                                            </EasingThicknessKeyFrame>
+                                        </ThicknessAnimationUsingKeyFrames>
+
+                                        <DoubleAnimation
+                                            BeginTime="00:00:03"
+                                            FillBehavior="HoldEnd"
+                                            Storyboard.TargetProperty="Opacity"
+                                            From="1"
+                                            To="0"
+                                            Duration="00:00:01" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Border.Triggers>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock
+                                Grid.Column="0"
+                                Margin="10,0,10,0"
+                                Padding="5"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                FontSize="14"
+                                Foreground="White"
+                                Text="{Binding Message}"
+                                TextWrapping="Wrap" />
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <Rectangle
+            x:Name="UI_Scretch_Borderless_Right"
+            Grid.RowSpan="3"
+            Width="3"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Stretch"
+            Cursor="SizeWE"
+            Fill="Transparent">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseLeftButtonDown">
+                    <i:InvokeCommandAction Command="{Binding AttemptButtonResizeClick}" PassEventArgsToCommand="True" />
+                </i:EventTrigger>
+                <i:EventTrigger EventName="MouseLeftButtonUp">
+                    <i:InvokeCommandAction Command="{Binding AttemptButtonResizeClick}" PassEventArgsToCommand="True" />
+                </i:EventTrigger>
+                <i:EventTrigger EventName="MouseMove">
+                    <i:InvokeCommandAction Command="{Binding AttemptSidedResize}" PassEventArgsToCommand="True" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Rectangle>
+
+        <Rectangle
+            x:Name="UI_Scretch_Borderless_Left"
+            Grid.RowSpan="3"
+            Width="3"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Stretch"
+            Cursor="SizeWE"
+            Fill="Transparent">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseLeftButtonDown">
+                    <i:InvokeCommandAction Command="{Binding AttemptButtonResizeClick}" PassEventArgsToCommand="True" />
+                </i:EventTrigger>
+                <i:EventTrigger EventName="MouseLeftButtonUp">
+                    <i:InvokeCommandAction Command="{Binding AttemptButtonResizeClick}" PassEventArgsToCommand="True" />
+                </i:EventTrigger>
+                <i:EventTrigger EventName="MouseMove">
+                    <i:InvokeCommandAction Command="{Binding AttemptSidedResize}" PassEventArgsToCommand="True" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Rectangle>
+
+        <Rectangle
+            x:Name="UI_Scretch_Borderless_Bottom"
+            Grid.RowSpan="3"
+            Height="3"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Bottom"
+            Cursor="SizeNS"
+            Fill="Transparent">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseLeftButtonDown">
+                    <i:InvokeCommandAction Command="{Binding AttemptButtonResizeClick}" PassEventArgsToCommand="True" />
+                </i:EventTrigger>
+                <i:EventTrigger EventName="MouseLeftButtonUp">
+                    <i:InvokeCommandAction Command="{Binding AttemptButtonResizeClick}" PassEventArgsToCommand="True" />
+                </i:EventTrigger>
+                <i:EventTrigger EventName="MouseMove">
+                    <i:InvokeCommandAction Command="{Binding AttemptSidedResize}" PassEventArgsToCommand="True" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Rectangle>
+
+        <Rectangle
+            x:Name="UI_Scretch_Borderless_Top"
+            Grid.RowSpan="3"
+            Height="3"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Top"
+            Cursor="SizeNS"
+            Fill="Transparent">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseLeftButtonDown">
+                    <i:InvokeCommandAction Command="{Binding AttemptButtonResizeClick}" PassEventArgsToCommand="True" />
+                </i:EventTrigger>
+                <i:EventTrigger EventName="MouseLeftButtonUp">
+                    <i:InvokeCommandAction Command="{Binding AttemptButtonResizeClick}" PassEventArgsToCommand="True" />
+                </i:EventTrigger>
+                <i:EventTrigger EventName="MouseMove">
+                    <i:InvokeCommandAction Command="{Binding AttemptSidedResize}" PassEventArgsToCommand="True" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Rectangle>
+
+    </Grid>
+
+</Window>

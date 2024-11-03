@@ -1,0 +1,103 @@
+﻿<UserControl
+    x:Class="CounterStrikeHunter.View.UI_Control.GradientButtonControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:CounterStrikeHunter.View.UI_Control"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Background="Transparent"
+    BorderBrush="Transparent"
+    BorderThickness="0"
+    mc:Ignorable="d">
+    <Border
+        x:Name="BTN_Border"
+        Width="{Binding Width}"
+        Height="{Binding Height}"
+        BorderBrush="{StaticResource UI_Gradient_Zero_Opacity}"
+        BorderThickness="2"
+        CornerRadius="{Binding BtnCornerRadius, RelativeSource={RelativeSource AncestorType=UserControl}}">
+
+        <Border
+            Width="{Binding Width}"
+            Height="{Binding Height}"
+            Margin="3"
+            Background="{DynamicResource UI_Gradient}"
+            CornerRadius="{Binding BtnCornerRadius, RelativeSource={RelativeSource AncestorType=UserControl}}"
+            Cursor="Hand"
+            Opacity="1.0">
+            <Grid>
+                <Label
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Content="{Binding Text, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                    FontSize="{Binding FontSize, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                    Foreground="White" />
+            </Grid>
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Style.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            FillBehavior="HoldEnd"
+                                            Storyboard.TargetProperty="(Border.Opacity)"
+                                            From="1.0"
+                                            To="0.2"
+                                            Duration="00:00:00.2" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            FillBehavior="HoldEnd"
+                                            Storyboard.TargetProperty="(Border.Opacity)"
+                                            From="0.2"
+                                            To="1.0"
+                                            Duration="00:00:00.2" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+            <Border.Triggers>
+                <EventTrigger RoutedEvent="MouseEnter">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimationUsingKeyFrames
+                                FillBehavior="HoldEnd"
+                                Storyboard.TargetName="BTN_Border"
+                                Storyboard.TargetProperty="(Border.BorderBrush).(LinearGradientBrush.Opacity)"
+                                Duration="00:00:00.15">
+                                <EasingDoubleKeyFrame KeyTime="0%" Value="0" />
+                                <EasingDoubleKeyFrame KeyTime="20%" Value="0.1" />
+                                <EasingDoubleKeyFrame KeyTime="40%" Value="0.2" />
+                                <EasingDoubleKeyFrame KeyTime="60%" Value="0.3" />
+                                <EasingDoubleKeyFrame KeyTime="80%" Value="0.5" />
+                                <EasingDoubleKeyFrame KeyTime="100%" Value="1" />
+                            </DoubleAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="MouseLeave">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation
+                                FillBehavior="HoldEnd"
+                                Storyboard.TargetName="BTN_Border"
+                                Storyboard.TargetProperty="(Border.BorderBrush).(LinearGradientBrush.Opacity)"
+                                From="1.0"
+                                To="0.0"
+                                Duration="00:00:00.15" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Border.Triggers>
+        </Border>
+    </Border>
+</UserControl>

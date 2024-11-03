@@ -1,0 +1,26 @@
+<Application
+    x:Class="CounterStrikeHunter.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:CounterStrikeHunter"
+    d1p1:Ignorable="d"
+    Startup="Application_Startup">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/Localization/en-US.xaml" />
+                <ResourceDictionary Source="Resources/Localization/ru-RU.xaml" />
+                <ResourceDictionary Source="Resources/Style/Generic.xaml" />
+                <ResourceDictionary Source="Resources/Style/ComboBoxStyle.xaml" />
+                <ResourceDictionary Source="Resources/Style/NavigationTabStyle.xaml" />
+                <ResourceDictionary Source="Resources/Style/NavigationIntegratedTabStyle.xaml" />
+                <ResourceDictionary Source="Resources/Style/NavigationIntegratedTabWithTextStyle.xaml" />
+                <ResourceDictionary Source="Resources/Color/Colors.xaml" />
+                <ResourceDictionary Source="Resources/Locator/Locator.xaml" />
+                <ResourceDictionary Source="Resources/Style/ScrollStyle.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

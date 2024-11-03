@@ -1,0 +1,249 @@
+﻿<Page
+    x:Class="CounterStrikeHunter.View.UI_Page.AnalyzeSteamPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:control="clr-namespace:CounterStrikeHunter.View.UI_Control"
+    xmlns:converter="clr-namespace:CounterStrikeHunter.Model.Converter"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:local="clr-namespace:CounterStrikeHunter.View.UI_Page"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="AnalyzeSteamPage"
+    d:DesignHeight="557"
+    d:DesignWidth="834"
+    Background="Transparent"
+    DataContext="{Binding AnalyzeSteam, Source={StaticResource Locator}}"
+    FontFamily="/CounterStrikeHunter;component/Resources/Font/#MontSerrat"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    </Page.Resources>
+
+    <Grid>
+        <Border d:Background="Black">
+            <ListBox
+                Margin="0,0,0,0"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Background="Transparent"
+                BorderThickness="0"
+                ItemsSource="{Binding SteamAccounts, UpdateSourceTrigger=PropertyChanged}"
+                ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                ScrollViewer.PanningDeceleration="1"
+                ScrollViewer.VerticalScrollBarVisibility="Auto">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListBoxItem">
+                                    <Border Background="Transparent">
+                                        <ContentPresenter />
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Resources>
+                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent" />
+                            <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent" />
+                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Transparent" />
+                        </Style.Resources>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border
+                            Height="60"
+                            Margin="10,10,10,0"
+                            d:Opacity="1"
+                            Background="{StaticResource UI_Header_Background}"
+                            CornerRadius="10"
+                            Opacity="0">
+
+                            <Border.Triggers>
+                                <EventTrigger RoutedEvent="Loaded">
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation
+                                                FillBehavior="HoldEnd"
+                                                Storyboard.TargetProperty="Opacity"
+                                                From="0"
+                                                To="1"
+                                                Duration="00:00:00.2" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Border.Triggers>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="10" />
+                                </Grid.RowDefinitions>
+
+                                <Label
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    Margin="20,0,5,0"
+                                    VerticalAlignment="Center"
+                                    Content="{Binding AccountName}"
+                                    FontSize="16"
+                                    Foreground="White" />
+
+                                <Border
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    Background="Transparent"
+                                    Cursor="Hand">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="MouseLeftButtonDown">
+                                            <i:InvokeCommandAction Command="{Binding GotoProfile}" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                    <Border.Triggers>
+                                        <EventTrigger RoutedEvent="MouseEnter">
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation
+                                                        FillBehavior="HoldEnd"
+                                                        Storyboard.TargetProperty="Opacity"
+                                                        From="1.0"
+                                                        To="0.7"
+                                                        Duration="00:00:00.2" />
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </EventTrigger>
+                                        <EventTrigger RoutedEvent="MouseLeave">
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation
+                                                        FillBehavior="HoldEnd"
+                                                        Storyboard.TargetProperty="Opacity"
+                                                        From="0.7"
+                                                        To="1.0"
+                                                        Duration="00:00:00.2" />
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </EventTrigger>
+                                    </Border.Triggers>
+                                    <Path
+                                        Width="15"
+                                        Height="15"
+                                        Data="M1225 4739 c-340 -44 -620 -249 -762 -557 -19 -41 -47 -118 -61 -171 l-27 -96 -3 -1307 c-3 -1406 -3 -1413 48 -1568 96 -290 333 -526 620 -618 152 -48 103 -47 1530 -47 l1345 0 89 23 c191 48 338 134 476 279 125 131 193 257 242 450 23 87 23 96 23 748 l0 660 -28 47 c-80 137 -274 129 -348 -14 -18 -35 -19 -68 -19 -655 0 -689 -1 -700 -67 -833 -72 -147 -220 -260 -388 -295 -105 -22 -2565 -22 -2670 0 -204 43 -370 196 -432 400 -17 57 -18 129 -18 1375 0 1246 1 1318 18 1375 44 142 144 270 267 337 134 75 101 72 830 78 728 6 684 1 748 75 38 43 46 69 40 140 -6 67 -41 122 -101 156 l-42 24 -620 1 c-341 1 -651 -2 -690 -7z M3388 4740 c-179 -54 -201 -286 -36 -371 34 -18 63 -19 375 -19 l338 0 -832 -832 c-457 -458 -839 -848 -848 -867 -13 -25 -16 -52 -13 -101 4 -80 36 -131 102 -161 51 -23 136 -24 179 -3 18 9 407 390 865 847 l832 832 0 -335 c0 -328 0 -337 23 -380 52 -103 156 -137 262 -85 42 20 61 37 83 73 l27 47 3 601 3 601 -29 53 c-22 44 -38 60 -81 82 l-53 28 -587 -1 c-322 0 -598 -4 -613 -9z"
+                                        Fill="Gray"
+                                        RenderTransformOrigin="0.5,0.5"
+                                        Stretch="Uniform">
+                                        <Path.RenderTransform>
+                                            <RotateTransform>
+                                                <RotateTransform.Angle>-90</RotateTransform.Angle>
+                                            </RotateTransform>
+                                        </Path.RenderTransform>
+                                    </Path>
+                                </Border>
+
+                                <Border
+                                    Grid.Row="1"
+                                    Grid.Column="2"
+                                    Margin="5"
+                                    VerticalAlignment="Center"
+                                    CornerRadius="5">
+
+                                    <Border.Effect>
+                                        <DropShadowEffect
+                                            BlurRadius="20"
+                                            Opacity="0.8"
+                                            ShadowDepth="0" />
+                                    </Border.Effect>
+
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsVacBanned}" Value="True">
+                                                    <DataTrigger.Setters>
+                                                        <Setter Property="Background" Value="Red" />
+                                                        <Setter Property="DropShadowEffect.Color" Value="Red" />
+                                                    </DataTrigger.Setters>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding IsVacBanned}" Value="False">
+                                                    <DataTrigger.Setters>
+                                                        <Setter Property="Background" Value="Green" />
+                                                        <Setter Property="DropShadowEffect.Color" Value="Green" />
+                                                    </DataTrigger.Setters>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+
+                                    <Label FontSize="14" Foreground="White">
+                                        <Label.Style>
+                                            <Style TargetType="Label">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsVacBanned}" Value="True">
+                                                        <DataTrigger.Setters>
+                                                            <Setter Property="Content" Value="VAC" />
+                                                        </DataTrigger.Setters>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding IsVacBanned}" Value="False">
+                                                        <DataTrigger.Setters>
+                                                            <Setter Property="Content" Value="NO VAC" />
+                                                        </DataTrigger.Setters>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Label.Style>
+                                    </Label>
+                                </Border>
+
+                                <Border
+                                    Grid.Row="1"
+                                    Grid.Column="3"
+                                    Margin="5"
+                                    VerticalAlignment="Center"
+                                    Background="Green"
+                                    CornerRadius="5"
+                                    Visibility="{Binding Loginned, Converter={StaticResource BoolToVisibilityConverter}}">
+
+                                    <Border.Effect>
+                                        <DropShadowEffect
+                                            BlurRadius="20"
+                                            Opacity="0.8"
+                                            ShadowDepth="0"
+                                            Color="Green" />
+                                    </Border.Effect>
+
+                                    <Label
+                                        Content="{DynamicResource Steam_Account_Current}"
+                                        FontSize="14"
+                                        Foreground="White" />
+                                </Border>
+
+                                <Label
+                                    Grid.Row="1"
+                                    Grid.Column="5"
+                                    Margin="0,0,20,0"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Content="{Binding LoginDate}"
+                                    ContentStringFormat="{DynamicResource Steam_Account_Login}"
+                                    FontSize="14"
+                                    Foreground="DarkGray" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Border>
+    </Grid>
+
+</Page>

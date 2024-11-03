@@ -1,0 +1,202 @@
+﻿<Window
+    x:Class="CounterStrikeHunter.ViewModel.Dialog.SettingsDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:control="clr-namespace:CounterStrikeHunter.View.UI_Control"
+    xmlns:converter="clr-namespace:CounterStrikeHunter.Model.Converter"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:local="clr-namespace:CounterStrikeHunter.ViewModel.Dialog"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:CounterStrikeHunter.ViewModel.Dialog"
+    Title="SettingsDialog"
+    Width="650"
+    Height="500"
+    d:DataContext="{d:DesignInstance {x:Type vm:SettingsDialogViewModel}}"
+    AllowsTransparency="True"
+    Background="Transparent"
+    FontFamily="/CounterStrikeHunter;component/Resources/Font/#MontSerrat"
+    ResizeMode="NoResize"
+    ShowInTaskbar="False"
+    WindowStartupLocation="CenterOwner"
+    WindowStyle="None"
+    mc:Ignorable="d">
+
+    <Window.Resources>
+        <converter:InvBoolConverter x:Key="InvBoolConverter" />
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+
+            <RowDefinition Height="50" />
+
+            <RowDefinition Height="*" />
+
+        </Grid.RowDefinitions>
+
+        <Border
+            x:Name="UI_Header"
+            Grid.Row="0"
+            Background="{StaticResource UI_Dialog_Header_Background}"
+            CornerRadius="10, 10, 0, 0">
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="400" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="50" MaxWidth="50" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock
+                    Grid.Column="0"
+                    Margin="20,0,0,0"
+                    Padding="5"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    FontSize="16"
+                    Foreground="White">
+                    <Run Text="App" />
+                    <Run Foreground="{StaticResource UI_Gradient}" Text="Settings" />
+                </TextBlock>
+
+                <Border
+                    Grid.Column="2"
+                    Width="25"
+                    Height="25"
+                    Margin="5,0,0,0"
+                    HorizontalAlignment="Center"
+                    Background="Transparent"
+                    Cursor="Hand">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseLeftButtonDown">
+                            <i:InvokeCommandAction Command="{Binding Close}" PassEventArgsToCommand="True" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    <Grid>
+                        <Path
+                            Margin="5"
+                            Data="M 9.15625 6.3125 L 6.3125 9.15625 L 22.15625 25 L 6.21875 40.96875 L 9.03125 43.78125 L 25 27.84375 L 40.9375 43.78125 L 43.78125 40.9375 L 27.84375 25 L 43.6875 9.15625 L 40.84375 6.3125 L 25 22.15625 Z"
+                            Fill="White"
+                            RenderOptions.BitmapScalingMode="HighQuality"
+                            Stretch="Uniform" />
+                    </Grid>
+                    <Border.Triggers>
+                        <EventTrigger RoutedEvent="MouseEnter">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation
+                                        FillBehavior="HoldEnd"
+                                        Storyboard.TargetProperty="Opacity"
+                                        From="1.0"
+                                        To="0.7"
+                                        Duration="00:00:00.2" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="MouseLeave">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation
+                                        FillBehavior="HoldEnd"
+                                        Storyboard.TargetProperty="Opacity"
+                                        From="0.7"
+                                        To="1.0"
+                                        Duration="00:00:00.2" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Border.Triggers>
+                </Border>
+            </Grid>
+        </Border>
+
+        <Border
+            x:Name="UI_Body"
+            Grid.Row="1"
+            Background="{StaticResource UI_Dialog_Body_Background}"
+            CornerRadius="0, 0, 10, 10">
+
+            <ListBox
+                Margin="20"
+                HorizontalContentAlignment="Left"
+                VerticalContentAlignment="Center"
+                Background="Transparent"
+                BorderThickness="0"
+                ScrollViewer.CanContentScroll="True"
+                ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                ScrollViewer.VerticalScrollBarVisibility="Auto">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListBoxItem">
+                                    <Border Background="Transparent">
+                                        <ContentPresenter />
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Resources>
+                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent" />
+                            <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent" />
+                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Transparent" />
+                        </Style.Resources>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+
+                <Border Height="40" Background="Transparent">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="150" />
+                        </Grid.ColumnDefinitions>
+
+                        <Border
+                            Margin="0,0,15,0"
+                            Background="{DynamicResource UI_Gradient}"
+                            CornerRadius="2" />
+
+                        <Label
+                            Grid.Column="1"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Content="Current Language"
+                            FontSize="14"
+                            Foreground="White" />
+
+                        <ComboBox
+                            Grid.Column="2"
+                            ItemContainerStyle="{StaticResource CSH_ComboBoxItem}"
+                            ItemsSource="{Binding Languages, UpdateSourceTrigger=PropertyChanged}"
+                            SelectedItem="{Binding SelectedLanguage, UpdateSourceTrigger=PropertyChanged}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Border>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="20*" />
+                                                <ColumnDefinition Width="80*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Image
+                                                Grid.Column="0"
+                                                Width="15"
+                                                Height="15"
+                                                RenderOptions.BitmapScalingMode="HighQuality"
+                                                Source="{Binding Image}" />
+                                            <Label
+                                                Grid.Column="1"
+                                                Content="{Binding Name}"
+                                                Foreground="White" />
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </Grid>
+                </Border>
+            </ListBox>
+        </Border>
+    </Grid>
+</Window>

@@ -1,0 +1,728 @@
+﻿<Page
+    x:Class="CounterStrikeHunter.View.UI_Page.AnalyzeBrowsersPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:control="clr-namespace:CounterStrikeHunter.View.UI_Control"
+    xmlns:converter="clr-namespace:CounterStrikeHunter.Model.Converter"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:highlight="clr-namespace:CounterStrikeHunter.ViewModel.Highlight"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:local="clr-namespace:CounterStrikeHunter.View.UI_Page"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:navigation="clr-namespace:CounterStrikeHunter.ViewModel.Navigation"
+    xmlns:pair="clr-namespace:CounterStrikeHunter.Core.Service.Browser.Pair"
+    x:Name="AnalyzeBrowsersPageRoot"
+    Title="AnalyzeBrowsersPage"
+    d:DesignHeight="557"
+    d:DesignWidth="834"
+    Background="Transparent"
+    DataContext="{Binding AnalyzeBrowsers, Source={StaticResource Locator}}"
+    FontFamily="/CounterStrikeHunter;component/Resources/Font/#MontSerrat"
+    mc:Ignorable="d">
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Unloaded">
+            <i:InvokeCommandAction Command="{Binding Close}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
+    <Page.Resources>
+        <converter:MaxWidthConverter x:Key="MaxWidthConverter" />
+        <DataTemplate x:Key="HistoryDataTemplate" DataType="pair:BrowserDataPair">
+            <Border
+                Height="90"
+                Margin="20,0,0,0"
+                Background="Transparent">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="60" />
+                        <ColumnDefinition Width="600" />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="25" />
+                    </Grid.RowDefinitions>
+
+                    <Border
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Height="20"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Background="{DynamicResource UI_Gradient}"
+                        CornerRadius="5">
+                        <Label
+                            Padding="5,0,5,0"
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            Content="Title"
+                            FontSize="12"
+                            Foreground="White" />
+                    </Border>
+
+                    <Border
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Height="20"
+                        Margin="10,0,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Background="{DynamicResource UI_Gradient}"
+                        CornerRadius="5">
+                        <highlight:HighlitedTextBlock
+                            Margin="5,0,5,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            FontSize="12"
+                            Foreground="White"
+                            HighlightColor="{DynamicResource UI_Gradient}"
+                            HighlightText="{Binding ElementName=AnalyzeBrowsersPageRoot, Path=DataContext.SearchPattern, UpdateSourceTrigger=PropertyChanged}"
+                            Text="{Binding Title}" />
+                    </Border>
+
+                    <Border
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Height="20"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Background="{DynamicResource UI_Gradient}"
+                        CornerRadius="5">
+                        <Label
+                            Padding="5,0,5,0"
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            Content="Date"
+                            FontSize="12"
+                            Foreground="White" />
+                    </Border>
+
+                    <Border
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Height="20"
+                        Margin="10,0,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Background="{DynamicResource UI_Gradient}"
+                        CornerRadius="5">
+                        <highlight:HighlitedTextBlock
+                            Margin="5,0,5,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            FontSize="12"
+                            Foreground="White"
+                            HighlightColor="{DynamicResource UI_Gradient}"
+                            HighlightText="{Binding ElementName=AnalyzeBrowsersPageRoot, Path=DataContext.SearchPattern, UpdateSourceTrigger=PropertyChanged}"
+                            Text="{Binding Date}" />
+                    </Border>
+
+                    <Border
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Height="20"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Background="{DynamicResource UI_Gradient}"
+                        CornerRadius="5">
+                        <Label
+                            Padding="5,0,5,0"
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            Content="Hidden"
+                            FontSize="12"
+                            Foreground="White" />
+                    </Border>
+
+                    <Border
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        Height="20"
+                        Margin="10,0,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Background="{DynamicResource UI_Gradient}"
+                        CornerRadius="5">
+                        <highlight:HighlitedTextBlock
+                            Margin="5,0,5,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            FontSize="12"
+                            HighlightColor="{DynamicResource UI_Gradient}"
+                            HighlightText="{Binding ElementName=AnalyzeBrowsersPageRoot, Path=DataContext.SearchPattern, UpdateSourceTrigger=PropertyChanged}"
+                            Text="{Binding Hidden}" />
+                    </Border>
+                </Grid>
+            </Border>
+        </DataTemplate>
+
+        <DataTemplate x:Key="DownloadDataTemplate" DataType="pair:BrowserDataPair">
+            <Border
+                Height="90"
+                Margin="20,0,0,0"
+                Background="Transparent">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="60" />
+                        <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="25" />
+                    </Grid.RowDefinitions>
+
+                    <Border
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Height="20"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Background="{DynamicResource UI_Gradient}"
+                        CornerRadius="5">
+                        <Label
+                            Padding="5,0,5,0"
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            Content="File"
+                            FontSize="12"
+                            Foreground="White" />
+                    </Border>
+
+                    <Border
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Height="20"
+                        Margin="10,0,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Background="{DynamicResource UI_Gradient}"
+                        CornerRadius="5">
+                        <highlight:HighlitedTextBlock
+                            Margin="5,0,5,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            FontSize="12"
+                            Foreground="White"
+                            HighlightColor="{DynamicResource UI_Gradient}"
+                            HighlightText="{Binding ElementName=AnalyzeBrowsersPageRoot, Path=DataContext.SearchPattern, UpdateSourceTrigger=PropertyChanged}"
+                            Text="{Binding File}" />
+                    </Border>
+
+                    <Border
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Height="20"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Background="{DynamicResource UI_Gradient}"
+                        CornerRadius="5">
+                        <Label
+                            Padding="5,0,5,0"
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            Content="Date"
+                            FontSize="12"
+                            Foreground="White" />
+                    </Border>
+
+                    <Border
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Height="20"
+                        Margin="10,0,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Background="{DynamicResource UI_Gradient}"
+                        CornerRadius="5">
+                        <highlight:HighlitedTextBlock
+                            Margin="5,0,5,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            FontSize="12"
+                            Foreground="White"
+                            HighlightColor="{DynamicResource UI_Gradient}"
+                            HighlightText="{Binding ElementName=AnalyzeBrowsersPageRoot, Path=DataContext.SearchPattern, UpdateSourceTrigger=PropertyChanged}"
+                            Text="{Binding Date}" />
+                    </Border>
+
+                    <Border
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Height="20"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Background="{DynamicResource UI_Gradient}"
+                        CornerRadius="5">
+                        <Label
+                            Padding="5,0,5,0"
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            Content="Size"
+                            FontSize="12"
+                            Foreground="White" />
+                    </Border>
+
+                    <Border
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        Height="20"
+                        Margin="10,0,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Background="{DynamicResource UI_Gradient}"
+                        CornerRadius="5">
+                        <highlight:HighlitedTextBlock
+                            Margin="5,0,5,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            FontSize="12"
+                            Foreground="White"
+                            HighlightColor="{DynamicResource UI_Gradient}"
+                            HighlightText="{Binding ElementName=AnalyzeBrowsersPageRoot, Path=DataContext.SearchPattern, UpdateSourceTrigger=PropertyChanged}"
+                            Text="{Binding Size}" />
+                    </Border>
+                </Grid>
+            </Border>
+        </DataTemplate>
+    </Page.Resources>
+
+    <Grid>
+        <Border d:Background="Transparent">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="250" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Border Background="{StaticResource UI_Header_Background}" CornerRadius="10">
+                    <Grid>
+                        <ListBox
+                            Margin="0,20,0,0"
+                            VerticalAlignment="Top"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            ScrollViewer.CanContentScroll="False"
+                            ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                            ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                            SelectedIndex="{Binding SelectedBrowser, UpdateSourceTrigger=PropertyChanged}"
+                            SelectionMode="Single">
+                            <navigation:NavigationIntegratedTabWithTextViewModel
+                                Width="200"
+                                Height="50"
+                                Margin="0,10,0,0"
+                                Icon="M4.009,23.496 c0-11.312,9.183-20.495,20.496-20.495s20.496,9.183,20.496,20.495s-9.183,20.495-20.496,20.495S4.009,34.808,4.009,23.496z M26,35.507V25.125l8.549-8.559c0.585-0.587,0.585-1.537,0-2.121c-0.587-0.585-1.537-0.585-2.121,0l-7.931,7.939l-7.931-7.939 c-0.585-0.585-1.535-0.585-2.121,0c-0.585,0.585-0.585,1.535,0,2.121L23,25.129v10.377c0,0.828,0.672,1.5,1.5,1.5 C25.327,37.007,26,36.335,26,35.507z"
+                                IsEnabled="{Binding YandexExists}"
+                                ModelTabIndex="0"
+                                Text="Yandex" />
+                            <navigation:NavigationIntegratedTabWithTextViewModel
+                                Width="200"
+                                Height="50"
+                                Margin="0,10,0,0"
+                                Icon="M2370 5114 c-19 -2 -78 -9 -130 -15 -450 -51 -908 -244 -1277 -539 -88 -71 -343 -317 -343 -332 0 -4 183 -325 407 -713 l407 -704 32 98 c113 344 373 613 710 734 179 64 99 61 1445 67 l1227 5 -57 100 c-118 208 -239 367 -414 544 -400 405 -881 648 -1457 736 -100 15 -472 28 -550 19z M365 3878 c-341 -573 -446 -1240 -300 -1894 31 -137 97 -332 159 -473 253 -569 752 -1060 1327 -1305 127 -53 330 -119 451 -145 l86 -19 407 705 c224 388 405 707 403 709 -3 2 -20 -1 -39 -6 -19 -6 -77 -17 -129 -25 -440 -68 -886 132 -1129 505 -31 47 -308 523 -616 1058 -308 534 -563 972 -566 972 -3 0 -27 -37 -54 -82z M2405 3396 c-507 -101 -810 -611 -653 -1096 87 -270 295 -471 575 -557 78 -23 104 -26 233 -26 129 0 155 3 233 26 291 89 495 293 584 584 23 78 26 104 26 233 0 129 -3 155 -26 233 -89 291 -296 498 -584 583 -110 32 -282 41 -388 20z M3400 3343 c198 -215 310 -498 310 -783 0 -162 -49 -369 -119 -507 -16 -32 -286 -503 -600 -1047 -314 -543 -571 -992 -571 -997 0 -5 57 -9 128 -9 877 0 1675 431 2158 1166 408 619 522 1425 303 2141 l-32 103 -819 0 -820 0 62 -67z"
+                                IsEnabled="{Binding ChromeExists}"
+                                ModelTabIndex="1"
+                                Text="Chrome" />
+                            <navigation:NavigationIntegratedTabWithTextViewModel
+                                Width="200"
+                                Height="50"
+                                Margin="0,10,0,0"
+                                Icon="M 25.300781 3 C 15.790781 3 7.7008594 8.6803125 4.3808594 17.570312 C 7.0908594 14.590313 10.679609 13 14.849609 13 L 14.880859 13 C 21.350859 13.01 28.189219 17.100547 30.449219 22.310547 L 30.439453 22.310547 C 31.249453 23.890547 31.060781 25.520781 30.800781 26.550781 C 30.500781 27.720781 30.050859 28.270234 29.880859 28.490234 L 29.789062 28.609375 C 29.459063 29.019375 29.510391 29.620469 29.900391 29.980469 C 29.970391 30.040469 30.080469 30.120703 30.230469 30.220703 L 30.490234 30.380859 C 31.760234 31.180859 34.630469 32 37.230469 32 C 39.220469 32 41.819766 31.690234 44.259766 29.240234 C 48.359766 25.140234 46.779219 19.419766 46.199219 17.759766 C 45.209219 14.949766 41.100313 5.6101563 29.570312 3.4101562 C 28.170312 3.1401562 26.730781 3 25.300781 3 z M 14.849609 15 C 9.6496094 15 5.4800781 17.910937 3.0800781 23.210938 C 2.2900781 32.370937 7.8394531 40.589531 14.439453 44.269531 C 15.389453 44.799531 18.409141 46.320312 22.619141 46.820312 C 18.899141 45.060313 16.069531 41.99 14.769531 38 C 12.609531 31.37 15.319922 24.290703 21.669922 19.970703 L 21.679688 19.980469 C 22.639688 19.350469 23.809766 18.990234 25.009766 18.990234 C 25.149766 18.990234 25.279922 18.989766 25.419922 19.009766 C 22.609922 16.609766 18.630859 15.01 14.880859 15 L 14.849609 15 z M 19 25.169922 C 16.22 28.739922 15.309687 33.170859 16.679688 37.380859 C 18.489687 42.940859 23.780469 46.460469 30.230469 46.480469 C 35.250469 45.360469 39.619297 42.429219 43.279297 37.699219 L 43.369141 37.580078 C 43.619141 37.210078 43.600313 36.719141 43.320312 36.369141 C 43.030313 36.029141 42.550625 35.909844 42.140625 36.089844 L 41.660156 36.310547 C 41.460156 36.400547 41.280547 36.459063 41.060547 36.539062 C 40.830547 36.619063 40.570469 36.719375 40.230469 36.859375 C 38.940469 37.389375 37.020938 37.689453 34.960938 37.689453 C 33.230937 37.689453 31.540937 37.470312 30.210938 37.070312 C 28.330937 36.510312 22.599375 34.779688 19.609375 28.179688 C 19.239375 27.359688 18.99 26.309922 19 25.169922 z"
+                                IsEnabled="{Binding EdgeExists}"
+                                ModelTabIndex="2"
+                                Text="Edge" />
+                            <navigation:NavigationIntegratedTabWithTextViewModel
+                                Width="200"
+                                Height="50"
+                                Margin="0,10,0,0"
+                                Icon="M2330 5110 c-482 -43 -950 -230 -1350 -538 -195 -150 -448 -432 -594 -662 -63 -99 -186 -351 -230 -471 -49 -134 -102 -340 -128 -499 -31 -195 -31 -565 0 -760 26 -159 79 -365 128 -499 44 -120 167 -372 230 -471 204 -321 503 -620 824 -824 99 -63 351 -186 471 -230 519 -190 1105 -204 1621 -40 162 52 164 56 38 68 -156 15 -402 74 -582 140 -834 302 -1437 993 -1597 1826 -65 342 -51 668 45 1015 204 738 792 1356 1554 1631 182 67 424 125 580 140 126 12 124 16 -38 68 -306 97 -648 135 -972 106z M3500 4634 c-372 -44 -589 -104 -870 -243 l-135 -66 100 -7 c131 -9 222 -24 320 -54 509 -158 912 -653 1040 -1279 159 -776 -133 -1585 -711 -1971 -196 -131 -393 -195 -649 -212 l-100 -7 135 -67 c231 -114 460 -185 720 -225 148 -23 496 -23 647 0 l103 16 77 62 c186 150 411 405 546 615 189 297 320 654 374 1019 24 166 24 524 0 690 -82 557 -328 1054 -717 1445 -69 69 -160 154 -203 189 -77 62 -77 63 -175 77 -96 14 -435 26 -502 18z"
+                                IsEnabled="{Binding OperaExists}"
+                                ModelTabIndex="3"
+                                Text="Opera" />
+                            <navigation:NavigationIntegratedTabWithTextViewModel
+                                Width="200"
+                                Height="50"
+                                Margin="0,10,0,0"
+                                Icon="M 250.921 9.482 C 245.602 12.375, 235.362 32.004, 230.387 48.846 C 230.127 49.724, 228.051 48.419, 224.405 45.087 C 217.650 38.914, 207.284 32.722, 197.905 29.259 C 190.138 26.392, 187.475 26.820, 184.461 31.419 C 182.922 33.768, 182.951 34.500, 184.908 42.838 C 186.059 47.738, 187 53.334, 187 55.274 L 187 58.801 179.791 56.946 C 161.008 52.115, 139.347 51.920, 121.663 56.424 C 110.016 59.390, 94.035 66.789, 83.301 74.185 C 68.335 84.497, 50.108 103.873, 38.627 121.675 C 32.615 130.998, 32.465 135.638, 38.084 138.543 C 40.593 139.841, 41.987 139.830, 49.993 138.448 C 54.981 137.587, 60.585 137.022, 62.447 137.191 L 65.833 137.500 60.905 144 C 44.293 165.913, 35.339 200.418, 34.261 246.675 C 33.376 284.694, 37.415 314.103, 48.172 347.954 C 51.539 358.552, 53.975 362, 58.093 362 C 62.997 362, 63.991 360.915, 69.422 349.630 C 72.368 343.509, 76.966 335.575, 79.639 332 L 84.500 325.500 85.156 339.500 C 87.039 379.718, 102.821 414.936, 131.635 443.220 C 140.797 452.214, 145.689 456, 148.147 456 C 151.653 456, 154.617 453.786, 156.917 449.451 C 159.184 445.177, 167.981 436, 169.810 436 C 170.303 436, 172.727 439.038, 175.197 442.750 C 195.258 472.904, 222.456 494.919, 248.461 502.053 L 256 504.121 263.539 502.053 C 289.487 494.934, 316.785 472.838, 336.803 442.750 C 339.273 439.037, 341.697 436, 342.190 436 C 344.027 436, 352.820 445.185, 355.104 449.490 C 357.749 454.475, 361.476 456.599, 365.715 455.535 C 369.977 454.466, 393.434 430.149, 400.475 419.500 C 416.983 394.536, 425.489 368.734, 426.849 339.500 L 427.500 325.500 432.361 332 C 435.034 335.575, 439.632 343.509, 442.578 349.630 C 448.009 360.915, 449.003 362, 453.907 362 C 458.025 362, 460.461 358.552, 463.828 347.954 C 470.736 326.215, 474.937 305.282, 477.053 282.054 C 478.549 265.620, 477.755 227.862, 475.611 213.500 C 471.010 182.691, 462.838 159.531, 451.085 144 L 446.167 137.500 449.553 137.191 C 451.415 137.022, 457.019 137.587, 462.007 138.448 C 470.013 139.830, 471.407 139.841, 473.916 138.543 C 479.535 135.638, 479.385 130.998, 473.373 121.675 C 461.892 103.873, 443.665 84.497, 428.699 74.185 C 418.206 66.955, 402.550 59.662, 390.500 56.390 C 381.497 53.946, 378.806 53.672, 363.500 53.641 C 349.609 53.612, 344.854 53.992, 337.500 55.720 C 332.550 56.883, 327.712 58.145, 326.750 58.524 C 325.273 59.107, 325 58.632, 325 55.481 C 325 53.428, 325.941 47.738, 327.092 42.838 C 329.049 34.500, 329.078 33.768, 327.539 31.419 C 324.525 26.820, 321.862 26.392, 314.095 29.259 C 304.716 32.722, 294.350 38.914, 287.595 45.087 C 283.949 48.419, 281.873 49.724, 281.613 48.846 C 278.409 37.999, 271.557 22.821, 266.232 14.775 C 262.059 8.468, 256.390 6.509, 250.921 9.482 M 128.105 87.583 C 115.196 91.054, 104.981 99.622, 99.175 111.846 C 92.677 125.529, 93.746 142.121, 101.942 154.779 C 106.799 162.281, 110.374 165.291, 125.573 174.675 C 132.543 178.979, 138.445 183.013, 138.688 183.640 C 138.931 184.267, 134.635 193.043, 129.141 203.142 C 123.648 213.242, 118.609 223.666, 117.944 226.308 C 116.494 232.066, 117.215 239.445, 119.795 245.249 C 120.834 247.587, 131.692 261.799, 143.924 276.832 L 166.165 304.164 165.395 309.332 C 162.985 325.516, 167.646 333.324, 186.308 344.364 C 189.656 346.345, 192.717 348.086, 193.111 348.233 C 193.504 348.380, 194.475 354.238, 195.269 361.250 C 197.227 378.546, 198.683 380.887, 213.895 391.194 C 221.718 396.495, 226.781 399.216, 230.174 399.944 C 236.590 401.320, 275.448 401.312, 281.878 399.933 C 285.353 399.187, 290.259 396.541, 298.150 391.156 C 314.125 380.254, 314.940 378.690, 317.511 353.985 C 318.079 348.533, 318.146 348.438, 323.293 345.722 C 333.978 340.084, 341.567 333.584, 344.526 327.537 C 347.115 322.245, 347.252 321.317, 346.700 312.796 L 346.111 303.703 368.204 276.601 C 380.355 261.696, 391.151 247.587, 392.196 245.249 C 394.783 239.456, 395.508 232.075, 394.056 226.308 C 393.391 223.666, 388.381 213.295, 382.923 203.261 C 377.465 193.227, 373 184.583, 373 184.052 C 373 183.522, 378.698 179.580, 385.662 175.294 C 402.181 165.125, 408.013 159.776, 412.521 150.656 C 419.364 136.809, 419.370 124.278, 412.540 110.409 C 405.110 95.322, 389.772 86, 372.379 86 C 368.969 86, 363.551 86.833, 360.339 87.852 C 357.128 88.870, 332.337 100.144, 305.249 112.906 L 255.998 136.108 205.773 112.483 C 178.150 99.489, 153.081 88.214, 150.064 87.429 C 143.207 85.642, 135.108 85.699, 128.105 87.583 M 129.909 103.493 C 123.746 105.473, 116.260 112.246, 113.366 118.462 C 110.112 125.448, 110.106 135.541, 113.351 142.500 C 114.633 145.250, 116.407 148.100, 117.293 148.833 C 118.700 149.996, 119.091 149.718, 120.376 146.643 C 122.773 140.906, 129.410 134.538, 136.141 131.517 C 141.621 129.058, 143.144 128.811, 150.388 129.209 C 162.635 129.882, 170.063 134.600, 173.031 143.593 C 175.480 151.013, 174.295 154.002, 154.378 190.662 C 143.995 209.772, 134.933 226.973, 134.239 228.887 C 131.860 235.451, 133.158 237.815, 151.615 260.515 C 161.165 272.259, 169.433 282.149, 169.989 282.493 C 170.550 282.840, 171 282.167, 171 280.982 C 171 279.807, 172.368 277.478, 174.040 275.806 C 176.584 273.262, 177.604 272.867, 180.290 273.386 C 184.163 274.134, 187 277.281, 187 280.829 C 187 282.263, 185.581 290.908, 183.847 300.041 C 181.982 309.864, 180.968 317.737, 181.365 319.317 C 181.841 321.216, 184.415 323.582, 190.259 327.494 L 198.482 333 216.176 333 C 234.515 333, 237.769 332.454, 241.882 328.683 C 246.653 324.310, 247.954 319.532, 247.978 306.292 L 248 294.084 232.990 281.492 C 224.735 274.566, 217.222 267.743, 216.295 266.328 C 215.368 264.913, 214.454 261.223, 214.264 258.128 C 213.707 249.090, 218.929 241.963, 227.577 239.957 C 232.679 238.774, 279.321 238.774, 284.423 239.957 C 293.071 241.963, 298.293 249.090, 297.736 258.128 C 297.546 261.223, 296.632 264.913, 295.705 266.328 C 294.778 267.743, 287.265 274.566, 279.010 281.492 L 264 294.084 264.022 306.292 C 264.046 319.532, 265.347 324.310, 270.118 328.683 C 274.229 332.451, 277.487 333, 295.757 333 L 313.384 333 321.242 327.841 C 325.564 325.004, 329.527 321.884, 330.050 320.907 C 331.534 318.133, 331.219 314.818, 328 299.339 C 326.350 291.404, 325 283.407, 325 281.567 C 325 277.335, 327.585 274.183, 331.710 273.386 C 334.396 272.867, 335.416 273.262, 337.960 275.806 C 339.632 277.478, 341 279.883, 341 281.150 L 341 283.455 343.410 280.977 C 348.033 276.226, 375.147 242.477, 376.704 239.536 C 377.567 237.906, 378.273 234.877, 378.273 232.805 C 378.273 229.023, 378.014 228.515, 346.202 169.730 C 338.230 155, 336.850 150.013, 338.969 143.593 C 341.937 134.600, 349.365 129.882, 361.612 129.209 C 368.856 128.811, 370.379 129.058, 375.859 131.517 C 382.590 134.538, 389.227 140.906, 391.624 146.643 C 393.426 150.955, 394.719 150.212, 398.452 142.721 C 400.469 138.672, 400.995 136.138, 400.978 130.554 C 400.943 119.196, 395.641 110.465, 385.590 105.211 C 381.418 103.030, 379.148 102.546, 373 102.525 L 365.500 102.500 311.854 127.750 C 282.349 141.637, 257.168 153, 255.898 153 C 254.627 153, 229.595 141.697, 200.272 127.883 C 151.327 104.825, 146.446 102.736, 140.728 102.392 C 136.964 102.166, 132.683 102.602, 129.909 103.493 M 141.241 146.935 C 137.319 149.398, 134.009 154.522, 134.004 158.138 C 134.001 160.308, 135.180 161.516, 140.645 164.943 C 144.300 167.235, 147.613 168.747, 148.008 168.305 C 148.402 167.862, 150.925 163.356, 153.613 158.291 C 158.213 149.623, 158.400 148.983, 156.801 147.378 C 154.106 144.674, 145.244 144.422, 141.241 146.935 M 357.228 146.039 C 355.978 146.541, 354.706 147.603, 354.401 148.398 C 353.934 149.614, 363.464 169, 364.529 169 C 364.724 169, 367.835 167.150, 371.442 164.888 C 378.930 160.193, 379.705 157.847, 375.730 151.898 C 371.834 146.066, 363.629 143.468, 357.228 146.039 M 187.406 176.415 C 179.912 178.761, 175.124 182.113, 173 186.500 C 170.585 191.490, 170.514 193.976, 172.588 201.068 C 179.385 224.312, 205.715 236.341, 227.491 226.151 C 238.073 221.199, 240.695 213.279, 235.952 200.601 C 231.764 189.409, 221.502 180.022, 209.568 176.469 C 203.601 174.692, 192.994 174.666, 187.406 176.415 M 301.487 176.741 C 285.578 182.426, 275.101 195.048, 274.171 209.649 C 273.630 218.145, 275.936 221.859, 284.312 225.982 C 307.840 237.565, 337.060 221.726, 340.664 195.435 C 341.113 192.160, 340.716 190.044, 338.977 186.453 C 337 182.368, 335.846 181.355, 330.119 178.675 C 321.692 174.731, 309.427 173.903, 301.487 176.741 M 190.750 192.162 C 187.131 193.484, 187.180 196.315, 190.922 202.217 C 196.058 210.314, 206.072 214.538, 215.959 212.777 C 221.834 211.730, 222.467 210.944, 221.002 206.506 C 217.298 195.284, 202.028 188.043, 190.750 192.162 M 303.493 193.351 C 297.676 196.060, 292.725 201.272, 290.998 206.506 C 289.525 210.970, 290.144 211.714, 296.291 212.862 C 302.386 214.001, 309.394 212.667, 314.270 209.440 C 318.573 206.592, 324 198.763, 324 195.402 C 324 190.694, 311.816 189.475, 303.493 193.351 M 230 256.921 C 230 257.846, 254.911 279, 256 279 C 257.089 279, 282 257.846, 282 256.921 C 282 256.383, 271.186 256, 256 256 C 240.814 256, 230 256.383, 230 256.921 M 253.123 340.369 C 251.899 341.672, 248.558 344.034, 245.699 345.619 C 240.733 348.371, 239.834 348.515, 225.607 348.845 L 210.714 349.189 211.338 357.979 C 211.681 362.814, 212.375 367.857, 212.881 369.187 C 213.425 370.617, 217.636 374.133, 223.200 377.802 L 232.599 384 256.190 384 L 279.781 384 288.914 378.003 C 294.731 374.183, 298.409 371.055, 299.043 369.388 C 299.590 367.948, 300.319 362.814, 300.662 357.979 L 301.286 349.189 286.393 348.825 C 270.111 348.427, 267.111 347.549, 259.646 340.994 C 257.770 339.347, 256.036 338, 255.792 338 C 255.548 338, 254.347 339.066, 253.123 340.369"
+                                IsEnabled="{Binding BraveExists}"
+                                ModelTabIndex="4"
+                                Text="Brave" />
+                        </ListBox>
+                    </Grid>
+                </Border>
+
+                <Border Grid.Column="1">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="60" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <Border Grid.Row="0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="200*" />
+                                    <ColumnDefinition Width="100*" />
+                                    <ColumnDefinition Width="100*" />
+                                </Grid.ColumnDefinitions>
+
+                                <Border
+                                    Grid.Column="0"
+                                    Height="40"
+                                    Margin="10"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Stretch"
+                                    Background="{DynamicResource UI_Header_Background}"
+                                    CornerRadius="5">
+                                    <Grid>
+                                        <TextBox
+                                            Padding="5,0,0,0"
+                                            HorizontalContentAlignment="Left"
+                                            VerticalContentAlignment="Center"
+                                            Background="Transparent"
+                                            BorderBrush="Transparent"
+                                            BorderThickness="0"
+                                            CaretBrush="{DynamicResource UI_Gradient}"
+                                            FontSize="14"
+                                            Foreground="White"
+                                            SelectionBrush="{DynamicResource UI_Gradient}"
+                                            Text="{Binding SearchPattern, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                                            <TextBox.Style>
+                                                <Style TargetType="TextBox">
+                                                    <Setter Property="ContextMenu">
+                                                        <Setter.Value>
+                                                            <ContextMenu>
+                                                                <ContextMenu.Template>
+                                                                    <ControlTemplate>
+                                                                        <Grid Background="Transparent" />
+                                                                    </ControlTemplate>
+                                                                </ContextMenu.Template>
+                                                            </ContextMenu>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                            </TextBox.Style>
+                                        </TextBox>
+                                    </Grid>
+                                </Border>
+
+                                <ComboBox
+                                    Grid.Column="2"
+                                    Margin="10"
+                                    Cursor="Hand"
+                                    ItemContainerStyle="{StaticResource CSH_ComboBoxItem}"
+                                    ItemsSource="{Binding SortingTypes}"
+                                    SelectedItem="{Binding SelectedSortingType, UpdateSourceTrigger=PropertyChanged}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border Margin="5" HorizontalAlignment="Left">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="20*" />
+                                                        <ColumnDefinition Width="80*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <Path
+                                                        Grid.Column="0"
+                                                        Width="12"
+                                                        Height="12"
+                                                        Data="{Binding Icon}"
+                                                        Fill="White"
+                                                        RenderOptions.BitmapScalingMode="HighQuality"
+                                                        Stretch="Uniform" />
+                                                    <Label
+                                                        Grid.Column="1"
+                                                        Content="{Binding LocalizedName}"
+                                                        Foreground="White" />
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+
+                                <ComboBox
+                                    Grid.Column="1"
+                                    Margin="10"
+                                    Cursor="Hand"
+                                    ItemContainerStyle="{StaticResource CSH_ComboBoxItem}"
+                                    ItemsSource="{Binding PairTypes}"
+                                    SelectedItem="{Binding SelectedPairType, UpdateSourceTrigger=PropertyChanged}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border Margin="5" HorizontalAlignment="Left">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="20*" />
+                                                        <ColumnDefinition Width="80*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <Path
+                                                        Grid.Column="0"
+                                                        Width="12"
+                                                        Height="12"
+                                                        Data="{Binding Icon}"
+                                                        Fill="White"
+                                                        RenderOptions.BitmapScalingMode="HighQuality"
+                                                        Stretch="Uniform" />
+                                                    <Label
+                                                        Grid.Column="1"
+                                                        Content="{Binding LocalizedName}"
+                                                        Foreground="White" />
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+
+                            </Grid>
+                        </Border>
+
+                        <ListBox
+                            Grid.Row="1"
+                            Margin="10"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            ItemsSource="{Binding CurrentBrowserPairs, UpdateSourceTrigger=PropertyChanged}"
+                            ScrollViewer.CanContentScroll="True"
+                            ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                            ScrollViewer.IsDeferredScrollingEnabled="True"
+                            ScrollViewer.VerticalScrollBarVisibility="Auto"
+                            VirtualizingStackPanel.CacheLength="1"
+                            VirtualizingStackPanel.CacheLengthUnit="Item"
+                            VirtualizingStackPanel.IsVirtualizing="True"
+                            VirtualizingStackPanel.VirtualizationMode="Recycling">
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="ListBoxItem">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="ListBoxItem">
+                                                <Border Background="Transparent">
+                                                    <ContentPresenter />
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Resources>
+                                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent" />
+                                        <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent" />
+                                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Transparent" />
+                                    </Style.Resources>
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Border
+                                        Height="60"
+                                        Margin="20,10,20,0"
+                                        d:Opacity="1"
+                                        Background="{StaticResource UI_Header_Background}"
+                                        CornerRadius="10"
+                                        Opacity="0">
+
+                                        <Border.Triggers>
+                                            <EventTrigger RoutedEvent="Loaded">
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimation
+                                                            FillBehavior="HoldEnd"
+                                                            Storyboard.TargetProperty="Opacity"
+                                                            From="0"
+                                                            To="1"
+                                                            Duration="00:00:00.2" />
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger>
+                                        </Border.Triggers>
+
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsExpanded, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                                                        <DataTrigger.EnterActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <DoubleAnimation
+                                                                        FillBehavior="HoldEnd"
+                                                                        Storyboard.TargetProperty="(Border.Height)"
+                                                                        From="60"
+                                                                        To="170"
+                                                                        Duration="00:00:00.2" />
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </DataTrigger.EnterActions>
+                                                        <DataTrigger.ExitActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <DoubleAnimation
+                                                                        FillBehavior="HoldEnd"
+                                                                        Storyboard.TargetProperty="(Border.Height)"
+                                                                        From="170"
+                                                                        To="60"
+                                                                        Duration="00:00:00.2" />
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </DataTrigger.ExitActions>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+
+                                        <Grid x:Name="ParentGrid">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="60" />
+                                                <RowDefinition Height="110" />
+                                            </Grid.RowDefinitions>
+
+                                            <Border Grid.Row="0" Background="Transparent">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="auto" />
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="50" />
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <Border
+                                                        Grid.Row="0"
+                                                        Grid.Column="0"
+                                                        Height="20"
+                                                        Margin="15"
+                                                        HorizontalAlignment="Left"
+                                                        Background="{DynamicResource UI_Gradient}"
+                                                        CornerRadius="5">
+                                                        <Label
+                                                            Margin="5"
+                                                            Padding="0"
+                                                            HorizontalContentAlignment="Center"
+                                                            VerticalContentAlignment="Center"
+                                                            Content="{Binding Type}"
+                                                            FontSize="10"
+                                                            Foreground="White" />
+                                                    </Border>
+
+                                                    <highlight:HighlitedTextBlock
+                                                        Grid.Row="0"
+                                                        Grid.Column="1"
+                                                        MaxWidth="{Binding ActualWidth, ElementName=ParentGrid, Converter={StaticResource MaxWidthConverter}}"
+                                                        Margin="5,0,0,0"
+                                                        HorizontalAlignment="Stretch"
+                                                        VerticalAlignment="Center"
+                                                        HorizontalContentAlignment="Left"
+                                                        FontSize="14"
+                                                        Foreground="White"
+                                                        HighlightColor="{DynamicResource UI_Gradient}"
+                                                        HighlightText="{Binding ElementName=AnalyzeBrowsersPageRoot, Path=DataContext.SearchPattern, UpdateSourceTrigger=PropertyChanged}"
+                                                        Text="{Binding Url}" />
+
+                                                    <Border
+                                                        Grid.Row="0"
+                                                        Grid.Column="3"
+                                                        Width="10"
+                                                        Height="10"
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"
+                                                        Background="Transparent"
+                                                        Cursor="Hand">
+
+                                                        <Border.Style>
+                                                            <Style TargetType="Border">
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding HasExpand}" Value="False">
+                                                                        <DataTrigger.Setters>
+                                                                            <Setter Property="IsEnabled" Value="False" />
+                                                                            <Setter Property="Opacity" Value="0.5" />
+                                                                        </DataTrigger.Setters>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </Border.Style>
+
+                                                        <i:Interaction.Triggers>
+                                                            <i:EventTrigger EventName="MouseLeftButtonDown">
+                                                                <i:InvokeCommandAction Command="{Binding Expand}" />
+                                                            </i:EventTrigger>
+                                                        </i:Interaction.Triggers>
+
+                                                        <Path
+                                                            HorizontalAlignment="Center"
+                                                            VerticalAlignment="Center"
+                                                            Data="M1179 3387 c-64 -34 -102 -93 -107 -166 -2 -32 1 -76 8 -97 10 -32 142 -169 679 -707 446 -447 679 -674 707 -687 50 -25 133 -26 182 -3 24 10 275 254 690 667 500 499 658 663 677 700 90 180 -92 368 -275 285 -34 -15 -180 -154 -613 -587 l-567 -567 -578 577 c-399 400 -588 582 -614 593 -56 23 -136 19 -189 -8z"
+                                                            Fill="White"
+                                                            RenderTransformOrigin="0.5, 0.5"
+                                                            Stretch="Uniform">
+                                                            <Path.Style>
+                                                                <Style TargetType="Path">
+                                                                    <Setter Property="RenderTransform">
+                                                                        <Setter.Value>
+                                                                            <RotateTransform Angle="-180" />
+                                                                        </Setter.Value>
+                                                                    </Setter>
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding IsExpanded, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                                                                            <DataTrigger.EnterActions>
+                                                                                <BeginStoryboard>
+                                                                                    <Storyboard>
+                                                                                        <DoubleAnimationUsingKeyFrames
+                                                                                            FillBehavior="HoldEnd"
+                                                                                            Storyboard.TargetProperty="RenderTransform.Angle"
+                                                                                            Duration="00:00:00.2">
+                                                                                            <EasingDoubleKeyFrame KeyTime="0%" Value="-180" />
+                                                                                            <EasingDoubleKeyFrame KeyTime="80%" Value="-60" />
+                                                                                            <EasingDoubleKeyFrame KeyTime="100%" Value="0" />
+                                                                                        </DoubleAnimationUsingKeyFrames>
+                                                                                    </Storyboard>
+                                                                                </BeginStoryboard>
+                                                                            </DataTrigger.EnterActions>
+                                                                            <DataTrigger.ExitActions>
+                                                                                <BeginStoryboard>
+                                                                                    <Storyboard>
+                                                                                        <DoubleAnimationUsingKeyFrames
+                                                                                            FillBehavior="HoldEnd"
+                                                                                            Storyboard.TargetProperty="RenderTransform.Angle"
+                                                                                            Duration="00:00:00.2">
+                                                                                            <EasingDoubleKeyFrame KeyTime="0%" Value="0" />
+                                                                                            <EasingDoubleKeyFrame KeyTime="80%" Value="-120" />
+                                                                                            <EasingDoubleKeyFrame KeyTime="100%" Value="-180" />
+                                                                                        </DoubleAnimationUsingKeyFrames>
+                                                                                    </Storyboard>
+                                                                                </BeginStoryboard>
+                                                                            </DataTrigger.ExitActions>
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </Path.Style>
+                                                        </Path>
+                                                    </Border>
+                                                </Grid>
+                                            </Border>
+
+                                            <ContentPresenter Grid.Row="1" Content="{Binding}">
+                                                <ContentPresenter.Style>
+                                                    <Style TargetType="ContentPresenter">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsVisitHistory}" Value="True">
+                                                                <DataTrigger.Setters>
+                                                                    <Setter Property="ContentTemplate" Value="{StaticResource HistoryDataTemplate}" />
+                                                                </DataTrigger.Setters>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding IsDownloadHistory}" Value="True">
+                                                                <DataTrigger.Setters>
+                                                                    <Setter Property="ContentTemplate" Value="{StaticResource DownloadDataTemplate}" />
+                                                                </DataTrigger.Setters>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </ContentPresenter.Style>
+                                            </ContentPresenter>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
+    </Grid>
+</Page>

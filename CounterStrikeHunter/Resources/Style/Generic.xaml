@@ -1,0 +1,18 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:highlight="clr-namespace:CounterStrikeHunter.ViewModel.Highlight"
+    xmlns:notification="clr-namespace:CounterStrikeHunter.Core.Service.Notification">
+    <Style TargetType="{x:Type highlight:HighlitedTextBlock}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type highlight:HighlitedTextBlock}">
+                    <TextBlock
+                        x:Name="PART_TextDisplay"
+                        TextTrimming="CharacterEllipsis"
+                        TextWrapping="Wrap" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>
